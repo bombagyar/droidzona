@@ -1,0 +1,377 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=144">Rózsimisi legújabb kalandjai</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-04-20</span><br><a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=143">Hová tűntem egy hétig?</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-04-20</span><br><a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=141">Ma is nap volt</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-04-10</span><br><a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=140">In memoriam</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-04-09</span><br><a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=139">Távcső nincs?</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-04-06</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br><a href="http://www.trueamericandog.com" target="_blank">True American Dog</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>A Megrendelő</h1>
+<h2>2012. április 5., csütörtök</h2>
+
+<div style="text-align: justify;">Hogy miért nem szeretek megrendelésre   
+programozni? A Megrendelő nevű droidfaj miatt. Ez az oka, amiért harmincéves kor fölött igen kevesen 
+  maradnak szabadúszók. Akik igen, azok vagy mazochisták, vagy le vannak égve, és   
+muszáj.<br><br>A Megrendelő eleinte teljesen normálisnak látszik. Valamilyen kisebb-nagyobb   
+kft képviselője, és szeretne X dolgot, általában weboldalt. A Megrendelők közös vonása, hogy   
+semmilyen téren nincs semmi közük informatikához, számítástechnikához, sőt, semmilyen műszaki   
+dologhoz. A Megrendelő rendszerint egy cerkófmajom értelmi képességeit igénylő dologgal foglalkozik, 
+  vagyis megvesz egy dologból sokat, majd eladja drágábban. A két mozzanat közé kell valami   
+reklámféleség, és Megrendelőnk a XXI. század második évtizedére eljutott végre a weboldal   
+fogalmához.<br><br>Azt persze ne képzeljük, hogy a Megrendelőnek van fogalma arról, mi kell egy   
+weboldalra 2012-ben. Megrendelőnk még mindig 1996-ban van leragadva, és úgy gondolja, a weboldal egy 
+  prospektus, amit oda lehet adni a sok hülye vevőnek. Helló, ezek vagyunk, ezt áruljuk, vegyél. A   
+webáruházat, az on-line megrendelést, a rendeléskövetést és hasonló dolgokat a fehér ember   
+vudumágiájának hiszi, és úgy gondolja, bőven elég, ha kiírja a netre, hogy a cége létezik. Ezzel   
+máris előrébb tart, mint a konkurrencia, akik bőven elégnek tartják a telefonkönyvben való   
+megjelenést, s ezzel ők is leköröztek egy harmadik konkurrenciát, aki babonásan retteg attól, hogy   
+felhívják, és még a telefonkönyvben is titkosíttatja a számát. Egyébként élek a gyanúperrel, hogy   
+Magyarországon nem is annyira a gazdasági helyzet miatt szűnnek meg rekordmennyiségben a cégek,   
+hanem mert elmaradott idiótákkal van tele az ország, akik azt hiszik, hogy egy HTML dokumentum   
+egyenesen a siker csúcsára repíti őket, a vásárlók meg majd írjanak levelet, küldjenek faxot meg   
+hívogassák telefonon a Gizikét, ha akarnak valamit. Üzenetküldő form nem kell.<br><br>Megrendelő 
+ezután leül   az emberrel, és elkezdi megpofázni, hogy mit is kéne csinálni. Rettentő rutin kell 
+ahhoz, hogy az   ember helyből ne kenje szét a saját arcát egy orbitális facepalm keretében. 
+Megrendelő ugyanis   ilyenkor előráncigálja tizenéves korából megmaradt emlékeit a kilencvenes évek 
+első weboldalairól,   és közli, hogy ő olyat szeretne. Nagy nehezen rá lehet vezetni, hogy nem az 
+kell neki, mert az már akkor is ciki volt, de ehhez is   évtizedes rutin kell. Megrendelőnk ezután 
+tévedhetetlen magabiztossággal elkezdi felvázolni,   hogy mi minden kell neki a funkciók terén, 
+aztán jól bele is bonyolódik, amikor felvilágosítják,   hogy egymásnak ellentmondó dolgokat kér, 
+végül sikítva hanyatt zuhan a székkel, amikor közlik vele,   hogy amit kér, az mennyibe fog kerülni 
+és meddig tart. Ezután hebegve-habogva elkezd leadni az   igényeiből, végül megmaradunk egy 
+hóttprimitív, majdhogynem statikus oldal tervénél, amiért   természetesen még mindig képtelen piaci 
+árat fizetni, mert ő úgy gondolta, hogy ez maximum   harmincezer. A Megrendelők 90%-át itt küldi el 
+a sunyiba a team, a maradék viszont kínkeservesen   rábólint egy többé-kevésbé elfogadható árra, így 
+a munka megkezdődhet. Az a 90% végül 10-20 ezer   forintokért dolgozó kontárpistikéknél köt ki, de 
+neki az a minőség is megfelel, ezért van tele a   magyar web olyan kotvány oldalakkal, amilyenekkel. 
+A pistikék meg azt hiszik, ők a webszakma, a piac fontos szereplői.<br><br>Első körben a designer 
+kolléga sóhajt egy   weltschmerzeset, leül a Photoshop elé, és megpróbál az elvárásoknak megfelelően 
+összehozni valami   olyasmit, amitől nem ég le csontig az arca. Megrendelő a munka ezen fázisában 
+tévedhetetlen   tervezőguru szerepében tetszeleg maga előtt, és úgy gondolja, eljött az ő nagy 
+pillanata, hiszen   végre kipróbálhatja magát a vizuális design terén. Folyamatosan ostobábbnál 
+ostobább módosítási   kérésekkel bombázza a designert, mint például: azt egy kicsit lejjebb, azt 
+nem-e lehetne-e lilával,   oda kéne egy zsiráf naplemente előtt, meg ezt a clipartot is bele kéne 
+tenni mert tökre jópofa, ez   biztos tetszeni fog az ügyfeleknek, és zenéljen is, mert az tök mókás, 
+és a többi. Designerünknek   már a zsiráfnál tikkelni kezd a szemöldöke, de beleteszi. Megrendelőnk 
+még hetvenhétszer   átpakoltatja, mire úgy gondolja, hogy kész. Az eredmény egy olyan csiricsáré 
+okádék lesz, amit a   vásáros cigányok is elhűlve adnának körbe, de Megrendelőnk szerint ez a piac 
+letarolásának kulcsa,   élete főműve, és büszke magára, hogy megalkotta.<br><br>A designer elvonul 
+idegszanatóriumba, és   átadja a sablont a programozónak. Annak már előre rángatózni kezd a 
+szemöldöke, de csak mert ő is   rutinos. Éppen ez óvja meg attól, hogy már az első órákban 
+leolvadjon az agya: előveszi az   ilyen esetekre előre elkészített, saját Content 
+Management-motorját, rászabja a sablont, és ezzel már kész is az   oldal nagy része. Ugyanis a 
+Megrendelők 99%-ban mind tök ugyanazt akarják "rendkívül újszerű és   egyedi" megoldásként. A 
+lényeg: bele tudjanak barmolni az aloldalak szövegébe, legyen többnyelvű,   tudjanak feltenni 
+képeket, és lehessen nekik írni e-mailt. Ennyi. Ennél bonyolultabbat talán   kétévente kér valaki, 
+az meg implementálható a kész rendszerhez. Persze a programozó használhatna   kész CMS-eket is, mint 
+a Wordpress, a Joomla vagy a Drupal, de a programozó nem hülye, hogy más   szarában turkáljon, és a 
+tornazsákokat (senki által soha nem használt, fölösleges funkciók) pakolássza. Normális programozó 
+gyorsabban ír saját tartalomkezelő   motort, mint amennyi idő alatt egy Wordpresst be lehet 
+konfigurálni. Különben is, ezek az   előregyártott motorok általában csak a Megrendelő igényeinek 
+99%-át fedik le, a maradék 1%-ot pedig   kínkeserves, több hetes gányolással lehet csak úgy-ahogy 
+belehegeszteni.<br><br>A programozónak   egyrészt valamivel könnyebb a dolga, mint a designernek, 
+mert a műszaki analfabéta Megrendelő   fontoskodása azonnal alábbhagy, amint az ő területébe kellene 
+belekontárkodnia, és félelemmel vegyes   tisztelettel tekint a digitális feketemágiára. Másrészt 
+viszont a projektre szánt idő 80%-át   felemésztette a Megrendelő faszkodása a design körül, amit ő 
+nem fog fel, és folyamatosan basztatja   a teamet, hogy közeleg a határidő. Hogy milyen határidő, 
+azt sosem lehet értelmezni, de rendkívül   fontos lehet például, hogy egy kávéautomatákat forgalmazó 
+cég weboldala április 19-re kész legyen,   vagy egy 32 éve működő autószerviznek pontosan május 
+11-re legyen weboldala, mert különben másnap   lekaszabolják őket a nindzsák. A programozó igyekszik 
+ezt betartani, általában   sikertelenül, aztán odaadja, tessék, itt van.<br><br>Itt jön az a 
+probléma, hogy Megrendelő ekkorra már   egyrészt totálisan elfelejtette, mi a fenét akart, másrészt 
+már teljesen mást akar, és elkezdi   hívogatni a programozót, hogy nem-e lehetne-e néhány "apró 
+módosítást", vagyis töviről hegyire   újraírni az egészet, persze ingyen. Ezeket rendszerint este 
+nyolc óra körül találja ki, amikor a   programozó éppen a vacsorájához látna, vagy leülne megnézni 
+egy filmet a fárasztó munkanap után. A   kérés kimondatlanul is magában foglalja, hogy amíg ez nincs 
+kész, a Megrendelő egy fillért sem   hajlandó fizetni, mert amúgy is úgy gondolja, hogy a csapat 
+eleve szemtelenül magas árat kért azért   az "egyszerű kis weboldalért". Így aztán ha a programozó 
+nem akarja hetekig halogatni a   lakbérfizetést, kénytelen vacsora helyett vérben forgó szemekkel 
+nekiesni a forráskódnak, és   megcsinálni az "apró módosítást" annak a segg Megrendelőnek. Jó 
+esetben másnapra nem talál ki valami   mást, feltéve hogy a fenti eseménysor már legalább háromszor 
+lejátszódott a héten.<br><br>Amikor a   Megrendelő végre megkapja a csiricsáré, értelmetlen 
+funkciókkal kiagyusztált weboldalát, jön a   következő probléma: fogalma sincs, hogyan kell 
+kezelnie. Ugyan ő maga kért szerkesztőfelületet, meg   többnyelvű oldalt, meg toronyórát lánccal, de 
+abba nem gondolt bele, hogy minden funkciónak   kezelőfelülete is kell hogy legyen, azt meg meg kéne 
+tanulni használni. Ekkor dokumentációért és   oktatásért rinyál, de ekkor a programozó már közli, 
+hogy nyalja ki a seggét a Blahán, és maximum   Skype-on hajlandó elmagyarázni, hogy működik a 
+rendszer, Megrendelőnk pedig belenyugszik, hogy ennyi   pénzért tényleg maximum ez 
+jár.<br><br>Többszöri szájbarágós elmagyarázás után, amit Megrendelő és   főleg üveges tekintetű 
+nőkből álló céges sleppje <span style="font-style: italic;">"Várj, várj, ne ilyen gyorsan 
+mondjad"</span> és <span style="font-style: italic;">"Jaj, én   ezt nem értem, mi nem vagyunk 
+informatikusok"</span> felkiáltásokkal szakít meg percenként, nagy nehezen   eljutunk odáig, hogy 
+Megrendelő végre elkezdi feltölteni az oldalt tartalommal, és a keze alá került   hihetetlen 
+hatalomtól megrészegülve telepakolja azt borzalmas helyesírású termékbemutató rizsákkal   és okádék 
+clipartokkal. A designer ezt látva sírva fakad, mert már egész elfogadható volt az oldal   kinézete, 
+de miután a Megrendelő belebarmolt a főoldalba egy 26 pontos, villogó sárga szöveget egy   alap Word 
+grafikával, már teljesen vállalhatatlan, továbbá szét is esik. A csapat portfoliójába   ezért nem az 
+eredeti oldal, hanem egy letükrözött változat kerül, amit a designer tölt fel kamu   tartalommal. 
+Megrendelőt azonban nem érdekli, hogy néz ki az oldala, csak az, hogy rajta legyen az   információ, 
+és legyen megfelelően figyelemfelkeltő.<br><br>Ezután jön az a rész, hogy a Megrendelőnek fizetnie 
+kéne, de elég jelentős részük úgy gondolja, hogy ez nem része a projektnek, és megpróbál eltűnni. 
+Némelyiknek egy dühös programozó beleveri a fejét a kocsija szélvédőjébe, másoknak elég bemenni az 
+irodájába néhány fekete ruhás haverral. Ez is az évek óta kialakult rutin 
+része.<br><br>Megrendelőről ezután soha többé nem hall   a webszakma, mert meggyőződése, hogy neki 
+már van weboldala, és ez az idők végezetéig kielégíti   minden igényét. A következő évben egyébként 
+megjelenik egy konkurrens nyugati cég, akik nem   sajnálják a pénzt a webes jelenlétre, és megeszik 
+reggelire a Megrendelőt. Ezután megy a sírás-rívás   a szemét multikról, és Megrendelő éhen döglik. 
+Szerencsére.<br><br></div>   <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/index.php?category=2&amp;startdate=2012-04-05&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+<a style="cursor: pointer;" onclick="clickbanner(1);"><img src="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/images/banners/banner_1.jpg" alt="Hirdetés"></a></div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(138, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 04, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120421161039id_/http://tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "http://piwik.sidripalliance.com/piwik/" : "http://piwik.sidripalliance.com/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.sidripalliance.com/piwik/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+</body>
+</html>

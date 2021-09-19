@@ -1,0 +1,447 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=223">Helyreigazítás</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-14</span><br><a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=220">A Csatáry-ügy rövidre zárása</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-07</span><br><a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=219">A szép új világ megint szebb lett</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-07</span><br><a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=218">Rég röhögtem ekkorát</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-06</span><br><a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=217">Ez hogy nem tűnt fel senkinek?</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-05</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://officespace.blog.hu" target="_blank">Irodai Patkány</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>Politikai elemzés összezavarodott állampolgároknak</h1>
+<h2>2012. január 10., kedd</h2>
+
+<div style="text-align: justify;">Ellopja a kormány a bankbetéteket, lenyúlja a 
+        nyugdíjakat, többet kell majd dolgozni, bóvlivá minősítették az országot - ezek sokkal     
+sikeresebb     jelmondatok, mint a fasisztaveszély meg a bakancsoktól való rettegés. A baloldal     
+retorikát váltott,     a proli nagykanállal zabálja a maszlagot. A kormány pedig nem tud visszalőni, 
+    mert nincs     mivel.</div><div style="text-align: justify;"><br></div><div style="text-align:       justify;">Szándékosan használtam a visszalőni kifejezést, mert ez háború.   
+Ellentétben a   napóleoni     háborúkban szocializálódott európai közvélekedéssel, háborút nemcsak   
+úgy lehet vívni,   hogy feláll     két hadsereg a mezőn, és rendületlenül ágyúzzák egymást. Léteznek 
+  és mindig is   léteztek csendesebb     és alattomosabb módszerek is, amelyek azonban éppen úgy   
+eldöntik egy-egy   ország vagy nemzet sorsát,     mint a döntő ütközetek. Meg lehet roppantani egy   
+ország gerincét   pénzügyi manőverekkel, zsarolással     vagy a közvélemény manipulálásával is.   
+Bizonyos nemzetek   pontosan tisztában vannak ezzel, le a     legutolsó szántóvetőig, és nem is   
+hagynák, hogy ilyesmivel   próbálkozzanak. Kína például nemrég     hivatalos védelmi doktrínaként   
+fogalmazta meg, hogy a   pénzügyi spekulációs támadásokkal szemben     fenntartják maguknak a jogot  
+ katonai eszközök, akár   atomfegyver bevetésére. Argentína, Brazília     szintén nem idegenkedik az 
+  ilyen megoldástól,   különösen amióta az elmúlt évtizedekben     megtapasztalták, milyen is egy   
+igazi aljas spekulációs   támadás.</div><div style="text-align:     justify;"><br></div><div style="text-align:   justify;">Manapság nem az az igazi veszély, hogy idegen     katonák masíroznak  
+ be Rio de Janeiro   vagy Peking főutcájára, dehogyis. Sőt, ennek elenyészően kicsi     az esélye,   
+tekintve a   háborúskodás döbbenetes költségeit. Egy országot, különösen egy nagy   országot   ma   
+képtelenség   fegyveres erővel térdre kényszeríteni. Ha történik is némi lövöldözés, az   csupán     
+kiegészítése   egy sokkal nagyobb, láthatatlan hadműveletnek, amelynek célja olyan strómanokat     
+juttatni az   adott nemzet kulcspozícióiba, akik azután hűségesen kiszolgálják a   megszállót,   
+mégpedig   anélkül,   hogy annak egyetlen bakát is ott kellene állomásoztatnia. Mert ez   az, amit   
+el kell érni:     megfelelő vezetést ültetni a stratégiai iparágak, a sajtó, a pénzpiac   csúcsára,  
+ s az illető állam     máris a legtökéletesebb vazallussá válik. Nincsenek lázadozó tömegek,   mert  
+ nincs látható   ellenség,   akinek kivonulását kívánhatnák, nincs földalatti ellenállás, mert     
+senki nem hiszi el   az ellenkezőjét   annak, amit a tévében lát, mi több, az egyszerű átlagember   
+azt   sem fogja   elhinni, hogy veszélyben a   hazája. Miért lenne? A hasa tele, a tévében van   
+műsor, a   féltett   munkahely holnap is megvan. Nem   lőnek, nem bombáznak, kik ezek a hülyék, akik 
+  háborút     emlegetnek? Lám, a másik csatornán éppen   kiröhögi őket egy a közkedvelt színész. 
+Haha,   nevessünk     rajtuk mi is!</div><div style="text-align:   justify;"><br></div><div style="text-align:     justify;">Magyarországot az elmúlt nyolc évben, a   szocialista kormányok   
+alatt csaknem teljesen     megszállták. Aki nem hiszi, nézze meg, miféle emberek   vannak   
+kulcspozíciókban mindenütt, olyan     helyeken, amiről nem is álmodhattuk, hogy fontosak. Például    
+ a Wallis Zrt-t sem ismerte senki, aki     mégis, az legfeljebb annyit tudott róluk, hogy valami     
+autókereskedés. Ugyan, miféle befolyása     lenne az állam dolgaira egy autókereskedésnek? Pedig   
+nagyon   is van. S hány apró, ártatlan kis kft.     és zrt. van még, amelyek valójában előretolt   
+hadállások,   ahonnan a hatalmas kenőpénzeket     osztogatják?</div><div style="text-align:   
+justify;"><br></div><div style="text-align:     justify;">Orbán Viktor és kormánya nagyon bátran   
+nekiment ezeknek a   hadállásoknak. Nem túlzott     Orbán, amikor arról beszélt, szabadságharc   
+folyik. Valóban az folyik.   Csakhogy igen alattomos és     aljas ellenséggel akadtunk össze. Ez az  
+ ellenség nem nyíltan támad, hanem   az embereket akarja     meggyőzni arról, hogy váltsák le azt a  
+ kormányt, amelyik őt támadja. S ahogy   jelenleg kinéz,     sajnos ez sikerülni is fog nekik. Mert  
+ mi sem egyszerűbb, mint a félművelt, de magát   okosnak     képzelő átlagemberrel elhitetni, hogy a 
+  világ fekete és fehér, a kormány rossz, és tőle fog       elvenni mindent, ha nem 
+vigyáz?</div><div style="text-align: justify;"><br></div><div style="text-align: justify;">Miután a 
+habzó szájú   fasisztázás, zsidó- és cigányféltés,       buzibabusgatás nem jött be - sőt, nagyon is 
+félresiklott   - az ellenség más módszert választott. Mi       az, amit az emberek a legjobban 
+féltenek? A   szabadságuk? Az, hogyne, ha a nyári szabadságra       gondolunk, de a magyar embernek 
+ez a szó nem   ugyanaz, mint az amerikaiaknak, ahol tényleg volt       szabadság jó pár évszázadig. 
+(Már nincs:   tessék csak megnézni, mi folyik az Occupy Wall Street       körül.) A magyar 
+beletörődött, hogy   mindig is rabszolga lesz. Hát akkor mivel lehet megijeszteni?       Megvan: 
+azzal, hogy el fogják   lopni a pénzét!</div><div style="text-align: justify;"><br></div><div style="text-align:   justify;">Mert minél szegényebb egy nép, annál jobban fél, hogy még szegényebb  
+     lesz. Abban az   országban, ahol egy bicikliért több hónapig kell dolgozni, agyonverik a       
+biciklitolvajt. Ha   attól fél, hogy elvesznek tőle öt forintot, kimegy az utcára ribilliót csapni.  
+     Lássuk, hogyan   lehet ennek hasznát venni...</div><div style="text-align: 
+justify;"><br></div><div style="text-align: justify;">Az új stratégia első lépése az volt, hogy 
+elhíresztelték: a kormány         ellopta a nyugdíjmegtakarításokat! Be is talált ez a kommunikációs 
+bomba rendesen. Jobb- és   baloldal       egy emberként hördült fel a hírre. A pénzünk!! Mert az 
+átlagember úgy képzeli el a   nyugdíjat,   hogy     az el van rakva a Nagy Állami Párnacihába, és 
+amikor majd megöregszik, egy   szép napon az   állam     ünnepélyesen visszaadja az egészet, tessék, 
+Béla bácsi, vigyáztunk rá,   most már   elköltheti. Az     állam, pontosabban a Zorbán pedig most 
+ellopta (!) ezt a pénzt.     Szégyen!</div><div style="text-align: justify;"><br></div><div style="text-align: justify;">Béla     bácsi, a Nagy Állami     Párnaciha nem létezik. A nyugdíj (és 
+a TB) nem más, mint egy államilag     garantált befektetési forma,     amit mindenkinek kötelező 
+igénybe venni. A betett összeg már nem     Béla bácsié, ahogyan a     részvényvásárlás sem azt 
+jelenti, hogy miután részvényt vettünk, bármikor     bemehetünk az illetékes     cég pénztárába, és 
+kivehetjük a befizetett összeget. Nem, a   nyugdíjalap   lényege, hogy az állam     megfelelően 
+trenírozott szakemberei az abban levő pénzt   különféle   befektetésekbe forgatják, és ennek     
+hozamából tartják fenn a befizetések értékét. Az     Orbán-kormány nem "ellopta" ezt a pénzt, hanem  
+   rendeltetésének megfelelően felhasználta,     befektette. Igen, azt lehet vitatni, hogy a 
+befektetés     eléri-e a célját, nem lesz-e veszteséges,     ennek azonban semmi köze nem lesz Béla 
+bácsi nyugdíjához.     Azt ugyanis az állam akkor is ki   fogja   fizetni majd, ha az egész üzlet 
+fuccsba megy.</div><div style="text-align:   justify;"><br></div><div style="text-align: 
+justify;">Jegyezzük azonban meg     csendesen, hogy a   Gyurcsány-kormány annak   idején viszont szó 
+szerint elpókerezte a     magánnyugdíjpénztárak   hozamát. Ezt nem feszegeti Szanyi   kapitány a 
+televízióban.</div><div style="text-align:   justify;"><br></div><div style="text-align:   
+justify;">A nyugdíjmaszlag után pedig     máris itt a   legújabb parasztvakítás: a kormány ellopja 
+ám   a bankbetétesek pénzét is! Bizony, az     állam   bemegy a bankba csíkos ingben és fekete 
+símaszkban,   besurran a pénztáros kisasszony mögött a       páncélterembe, és egy degeszre tömött 
+zsákkal távozik,   amelyen egy jól látható <b>$</b> jel       díszeleg. És szegény betétesek, azok 
+hoppon maradnak,   bizony.</div><div style="text-align:       justify;"><br></div><div style="text-align:   justify;">Rendkívül alattomos és aljas rémhír ez.       Nemcsak a kormányba 
+vetett bizalom rombolása a   célja, hanem ennél sokkal messzebbre mutat. Aki ezt       terjeszti, 
+arra épít, hogy az átlagembernek   fogalma sincs, hogy működik a bankbetét   intézménye,     továbbá 
+sokkal jobban szeret hangosan   sipákolni és egymásnak panaszkodni, mint öt   percre befogni a     
+száját és meghallgatni valakit, aki   viszont tudja.&nbsp;</div><div style="text-align:     
+justify;"><div id="banner1" class="banner"><a style="cursor: pointer;" onclick="clickbanner(1);"><img src="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_1.jpg" alt="Hirdetés"></a></div></div><div style="text-align:   justify;">A bankba betett pénz   ugyanis szintén nem 
+egy     nagy párnacihába kerül. Egyetlen bankban   sincs annyi pénz, amennyi a   betétek összértéke. 
+Amikor     ugyanis valaki betesz a bankba ezer   forintot, azt a bank szinte   azonnal kiadja 
+valakinek hitel     formájában. Csakhogy, mivel tudják,   hogy a betétes bizonyos   időn, teszem azt 
+egy éven belül biztosan     nem fogja visszakérni az   ezresét, nem egy, hanem tíz,   akár száz 
+hitelesnek is odaadja ezt az     összeget - papíron. Tudja   ugyanis, hogy a hiteles   vissza fogja 
+adni azt a nem is létező ezrest, s     akkor máris létezni fog,   és &nbsp;ha a betétes   egy év 
+múlva jelentkezik érte, megkaphatja. Igen ám,     de a sok visszaadott   ezrest megint   kiadják tíz 
+meg száz további hitelesnek, és így tovább... aminek     a vége egy   folyamatosan   növekvő 
+buborék, s amelyben a betéteknek csupán néhány százalékára van     valódi     pénzfedezet.</div><div style="text-align: justify;"><br></div><div style="text-align:         justify;">Mindezt azoknak 
+írtam le, akik nem jártak közgazdaságtanra, vagy nem látták az <a href="http://www.youtube.com/watch?v=4RS2nvT2uQc"><b><i>A pénz, mint adósság</i></b></a> című        
+ oktatófilmet. Amint ez a film is megjegyzi, nem véletlen, hogy az iskolákban nem oktatják a         
+pénzrendszer működését. Addig jó, amíg az átlagember azt hiszi, hogy a bank egy becsületes         
+vállalkozás.</div><div style="text-align: justify;"><br></div><div style="text-align: justify;">Ha   
+      azonban hirtelen minden betétes egyszerre megrohamozza a bankot, és követeli vissza a 
+betétjét,   a       bank nagy bajba kerül. Ezt hívják bankpániknak. Erre az esetre szolgál az ún. 
+tartalékbank,   amely       minden bank számára biztosítékot nyújt, hogy bankpánik esetén kisegíti 
+őket a szükséges         készpénzállománnyal. Magyarországon ezt a szerepet a Magyar Nemzeti Bank 
+játssza.</div><div style="text-align: justify;"><br></div><div style="text-align: justify;">Az a 
+híresztelés, hogy a         kormány ellopja a bankbetéteket, azt célozza, hogy a pénzrendszerhez nem 
+értő, félművelt emberek         pánikba essenek és rohanjanak kivenni a pénzüket. Az összes 
+magyarországi bank bajba kerülhet         ezáltal, illetve valójában nem, hiszen az MNB azonnal a 
+segítségükre siet. Igen ám, de ha elég   nagy       a bankpánik, arra az MNB teljes 
+készpénzállománya rámehet. Ezáltal pedig az ország       fizetésképtelenné   válik, és államcsőd 
+következik be.</div><div style="text-align:       justify;"><br></div><div style="text-align: 
+justify;">Ha sikerül egy ilyen bankpánikot előidézni, a       kormány két dolgot tehet.   Az egyik, 
+hogy hagyja, hogy az MNB rendeltetésszerűen ellássa   feladatát     - ez esetben összeomlik a   
+gazdaság. Avagy rendkívüli intézkedésként megtiltja azt -   ez viszont   azt   jelentené, hogy az 
+emberek   tényleg nem kapnák meg a bankba betett pénzüket, és   a napnál is     világosabb lenne 
+számukra, hogy   meglopták, kirabolták őket. Hol érdekelné őket   holmi öltönyös     magyarázkodás a 
+bankrendszer   működéséről! Sokkal fülbemászóbb dallam lenne a   számukra az ellenség     jól 
+megkonstruált sutyorgása,   hogy követeljenek előrehozott választást,   és váltsák le ezt a     
+"bűnöző, tolvaj" kormányt. S   természetesen szavazzanak azokra, akik ezt az   egészet okozták, és   
+  most megmentőink szerepében   tetszelegnek.</div><div style="text-align:   
+justify;"><br></div><div style="text-align:   justify;">Nagyon súlyos, egész pályás letámadás alatt  
+ áll Magyarország. Az     Orbán-kormány vállalta,   hogy a médiától az egyetemeken át a pénzügyi   
+világig mindenhonnan kitúrja     a befészkelődött, idegen   érdekeket kiszolgáló kulcsembereket.   
+Persze, hogy megy a hiszti a     "sajtószabadságról", a   "diktatúráról", hiszen azt mégsem   
+mondhatják, ami a balhé valódi oka.     Megmozgatnak minden követ az   egészen fiatalok hülyítésétől 
+  a külföld előtti rágalmazáson át az     emberölésig - figyeljük meg, hogy   lesz az is - hogy   
+Magyarország az övék legyen, és ne a     magyaroké.</div><div style="text-align:     
+justify;"><br></div><div style="text-align:     justify;">Lehet nem szeretni Orbán Viktort és   
+kormányát.   Én sem szeretem. De ők a mi kormányunk,     és saját érdekük mellett jelenleg elég   
+hatékonyan képviselik   a mienkét is. Ebben a háborúban,     akárcsak az igaziban, a frontvonalak   
+ide-oda hullámoznak, és   megtörténhet, hogy fel kell adni egy     olyan területet, amelyet korábban 
+  elfoglaltunk, vagy éppen   fordítva. Mint az IMF-tárgyalások esetében. Az ellenség minden alkalmat 
+    megragad, hogy gyávának és   ostobának, de főleg becstelennek   bélyegezze vezetőinket. Igen, 
+lehet,     hogy azok is. De tetszik   vagy sem, ők indultak meg velünk a   megszabadulás felé. Aki 
+akarja, várja     meg, míg megérkezik a szeplőtelen, patyolattiszta politikus illetve párt, és 
+szavazzon arra. De nem     fog megérkezni soha. Orbán Viktor a   legjobb, amivel jelenleg 
+rendelkezünk, és vele   kell végigjárnunk ezt az utat.     Majd ha a végére   értünk, lehet 
+lázadozni, leváltogatni. Addig   nem.</div><div style="text-align:       justify;"><br></div><div style="text-align: justify;">Évekkel   ezelőtt írtam egy cikket arról, hogy       a Jobbik egy 
+impotens párt. Ékes példáját látjuk ennek most. A   Jobbiknak lövése sincs, mi   folyik     
+körülötte, csak azon hisztiznek, hogy a Fidesz rendre leszavazza   az indítványaikat.   "Anyuuu, a   
+  bátyus nem hagy játszani!" Sőt, egyes képviselői már megpróbáltak   együtt tüntetni a   kormány 
+ellen     azokkal, akiket tűzzel-vassal irtani kellene. Nevetséges ez a   dilettantizmus,   hogy 
+amikor     megkezdődik az a szabadságharc, amiről évek óta álmodoztak, hirtelen úgy   tipegnek   
+ide-oda, mint     szűzlány a kuplerájban. Ahelyett, hogy támoganák azt, legalább saját szerény     
+médiaeszközeikkel.</div><div style="text-align: justify;"><br></div><div style="text-align:       
+justify;">A diktatúra nem önmagáért való dolog, hanem eszköz. Ha egy nemzet el   akar érni egy       
+fontos célt, mi több, élethalálharcot folytat érte, nincs helye széthúzásnak,   alternatív       
+javaslatoknak, lázadozásnak. Képzeljük el, ha egy katona azt mondaná, nem harcol, mert a         
+tábornoknak büdös a szája. Most nem azzal kellene foglalkozni, kinek szimpatikus Orbán Viktor és     
+    kinek nem. Nekem nem az. Én sem örülök, hogy diktatúrát épít. De inkább építsen ő, mint azok, 
+akik         oly nagyon aggódnak a mi szabadságunkért New Yorktól Brüsszelig.&nbsp;</div><div style="text-align:   justify;"><br></div><div style="text-align:   justify;">Sajnos míg nekik     
+hatalmas agymosó gépezet áll rendelkezésünkre, a mieink éveken át úgy gondolták, elég a győzelemhez  
+   egy Bencsikrata, egy HírTV és néhány középkorú megmondóember az Echo TV-n, ami voltaképpen egy    
+ rádió, képpel. Ez az a front, ahol a kormány vereséget fog szenvedni, s ezt ők is tudják jól. Egy   
+  kormányközleménnyel nem lehet azt ellensúlyozni, amit a kipirult arcú egyetemisták egy jól     
+megtámogatott tüntetésen egymás fejébe beszélnek. Bayer Zsolt publicisztikái nem elég fajsúlyosak az 
+    ATV műsoraival vagy az Index hazugságáradatával szemben. De sajnos az Orbánék körül kialakult    
+ médiaklikk nem tűri a vérfrissítést.</div><div style="text-align:     justify;"><br></div>        
+ <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=1&amp;startdate=2012-01-10&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+  
+  <div class="flashbanner" style="width: 468px; height: 60px;">
+  <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash4/cabs/swflash.cab#version=4,0,0,0"
+  id="name" width="468" height="60">
+  <param name="movie" value="images/banners/banner_3.swf">
+  <param name="quality" value="high">
+  <param name="wmode" value="opaque">
+  <param name="flashvars" value="bannerid=3">
+  <embed name="name" src="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_3.swf" 
+    quality="high" 
+    wmode="opaque" 
+    width="468" 
+    height="60" 
+    type="application/x-shockwave-flash"
+    flashvars="bannerid=3"
+    pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
+  </embed>
+  </object>
+  </div>     
+
+</div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(35, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 01, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120815193742id_/http://www.tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "http://piwik.sidripalliance.com/piwik/" : "http://piwik.sidripalliance.com/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.sidripalliance.com/piwik/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+</body>
+</html>

@@ -1,0 +1,360 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=226">Magyarország, mert megérdemlem</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-08-24</span><br><a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=224">Nyár</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-22</span><br><a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=223">Helyreigazítás</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-14</span><br><a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=220">A Csatáry-ügy rövidre zárása</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-07</span><br><a href="showpost.php%3Fid=219.html">A szép új világ megint szebb lett</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-07</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://officespace.blog.hu" target="_blank">Irodai Patkány</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>A szép új világ megint szebb lett</h1>
+<h2>2012. augusztus 7., kedd</h2>
+
+<div align="justify">Webes térkép-alkalmazást fejlesztek éppen. Ebben a   
+felhasználó, ha akarja, megbökhet egy gombot, mire a térkép az épp aktuális helyzetére áll rá. A GPS 
+  korában ez ugyebár nem egy nagy dolog, egy okostelefon rendszerszinten tudja, merre jár, és le is  
+ lehet kérdezni. Csakhogy...<br><br>Az egy kissé gondolkodóba ejtett, hogy a laptopomon   
+megbökve a gombot minden egyes böngésző, akár Macen, akár PC-n, pontosan megmondta, hol vagyok. A   
+laptopban ugyanis nincs se GPS, se mobiltelefon, hogy cellainformációkból találja ki a helyzetem. Az 
+  immár három éves iMacemben sincs. Akkor honnan tudják? Nem emlékszem, hogy valaha is beállítottam  
+ volna, hol lakom. Honnan tudja akkor a Firefox vagy a Chrome? Hiszen éppen úgy le lehet kérdezni, 
+mint például az IP címet.<br><br>Meglehetősen új dolog ez a <i>location aware   browsing,</i> még 
+sohasem volt vele dolgom. Nekiálltam keresgélni a neten, vajon hogy működik?   Meglepetésemre nem én 
+voltam az egyetlen, aki ezt találgatta. Kollégák százai vakarták a fejüket   világszerte, és agyaltak, vajon az IP címből okoskodja ki a böngésző, vagy talán a   netszolgáltatók mondják meg, 
+de hát az nem lehet, hiszen azok még a hatóságokkal is csak ímmel-ámmal   állnak szóba. Végül 
+megtaláltam a választ. Éppenséggel nem titok, de nem is írták az égre   lángbetűkkel...<br><br>Amikor a Google Maps fényképezős autói végigjárták a világot, látszólag   ártatlan fényképeket 
+készítgetve a világ minden autóval bejárható helyéről, valójában nemcsak ezzel   foglalatoskodtak. A 
+fedélzetükön elhelyezett adatgyűjtők folyamatosan mérték az elérhető Wi-Fi   hálózatok minden 
+paraméterét, meghatározva azok pontos helyét. Mert igaz ugyan, hogy egy átlagos   router csak 
+tíz-húsz méteren belül tud kapcsolódni, de ennél sokkal messzebbről is érzékelhetők a   jelei még 
+egy sima telefonnal is, speciális eszközzel pedig akár kilométerekről is azonosítható. Mi sem   
+egyszerűbb, mint a begyűjtött adatok alapján elkészíteni egy-egy város, vagy akár egy egész ország   
+Wi-Fi térképét, amelyen pontosan meg lehet határozni egy számítógép helyét, pusztán az általa   
+"látott" Wi-Fi routerek egyedi azonosítói és a jelerősségük alapján. Minél több hálózatra lát rá a   
+géped, annál pontosabb lesz a helymeghatározás. Az én esetemben például méteres pontosságról   
+beszélhetünk, vagyis a bemérés összevethető a GPS pontosságával. Természetesen ez a   
+helymeghatározás nem szenved a GPS olyan betegségeitől, mint az "urban canyon effect", azaz a jelek  
+ torzulása a magas épületek közötti szűk utcákon. Az így összegyűjtött adatbázist aztán a Google   
+jóságosan közkinccsé tette Google Location Services néven, s erre csatlakozik valamennyi böngésző,   
+így határozzák meg felhasználójuk földrajzi helyzetét, ha kell.<br><br>Igen, ez valóban ötletes és   
+mondhatni korszakalkotó technika, csakhogy van vele egy bökkenő. Ugyan a böngészők mindig   
+rákérdeznek, ha egy weboldal a felhasználó lokációjára kíváncsi, hogy elárulhatják-e neki, de ez   
+csak a böngészők fejlesztőinek jóindulatától függ. Bárki készíthet olyan programot, amely a   
+felhasználó megkérdezése nélkül csatlakozik a Google Location Services-hez, és kérdezi le a   
+helyzetét. Akár a most létező böngészők is megtehetik ezt, ha beléjük építenek egy megfelelő backdoort. Ilyen valószínűleg már most is létezik, csak nem kötik az orrunkra. A Google tehát létrehozott egy   
+olyan térinformatikai rendszert, amellyel bárhol bárki megfigyelhető és követhető, akár akarja, akár 
+  nem, s ami fölött nincs valódi ellenőrzése senkinek. Hogy nem fognak vele visszaélni, csupán olyan 
+  cégek becsületszava garantálja, akik valamennyien vastagon benne voltak már néhány tömeges   
+adatlopási botrányban. Emlékszünk, amikor az <a href="http://www.zdnet.com/users-warned-over-ie-clipboard-exploit-2039105357/">Internet Explorer</a> 
+  a felhasználó megkérdezése nélkül, rendszeresen elküldte a Microsoftnak a vágólap tartalmát? (Ami 
+a   Microsoft szerint "véletlen hiba" volt... hát persze.) S amikor <a href="http://www.favbrowser.com/google-chrome-spyware-confirmed/">2008-ban</a> a Google Chrome   
+megjelent, és első dolga volt folyamatosan rögzíteni a felhasználó minden lépését? Arról ne is   
+szóljunk, hogy a Facebook miket művel. Egy kiugrott felsővezetőjük például nemrég fedte fel, hogy   
+úgynevezett "árnyék-felhasználókat" készítenek olyan emberekről, akik nincsenek regisztrálva a   
+Facebookon, de mások hozzászólásaiból, posztjaiból fel lehet térképezni életüket, személyiségüket.   
+Így történik, hogy amikor valaki frissen regisztrál, a Facebook varázslatos módon máris fel tudja   
+kínálni, hogy milliárdnyi felhasználója közül kiket ismerhetünk. Ez a látszólag kedves kis funkciócska azonban azt jelenti, hogy Zuckerberg cége azok után is rendszeresen kémkedik, akik szóba sem akarnak állni a cégével.<br><br><img src="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/101miniscifi_1.jpg" class="img_right" alt="" title="">Elővettem egy régi,   
+megsárgult kis könyvecskét. 1988-ban jelent meg a Füles Mellényzsebkönyvtára sorozatban, a címe:   
+<i>101 mini sci-fi.</i> Szerzője Szentmihályi Szabó Péter, aki akkor a <i>Galaktika </i>munkatársa volt, s   
+akit jól ismerhetünk ma is például az Echo TV műsorából vagy a <i>Demokrata</i> magazinból. Évek óta, valahányszor ezekről a Nagy Testvért játszó mammutcégekről hallok híreket,   
+rendszeresen eszembe jut e kötetből az egyik egyperces novellácska, amit nyugodtan nevezhetünk próféciának is. Hiszen nemcsak 
+  az akkor elképzelhetetlennek látszó disztopikus vízió valósult meg, hanem még az évszámot is   
+eltalálta a szerző!<br><h6><b>Kémtelevízió<br></b><br>A Nikai cég reklámáron dobta piacra 2011-ben   
+új háromdimenziós tévéjét, alig harminc rublárért. A Nikai tri-di olyan olcsó volt, hogy az   
+irigységtől sárga versenytársak eldobható tévének csúfolták, és a dömpingár miatt különböző pereket  
+ indítottak a Nikai ellen. De egyetlen pert sem veszített a Nikai, sőt, büszkén vállalta az   
+eldobhatóságot, mert a Nikai tri-dit nem lehetett szétszedni, s így javítani sem, viszont ha két   
+éven belül elromlott, a vevő ingyen kapott egy újat. Harminc rublárért a bolondnak is megérte ez a   
+vásár. Három éven belül a Nikai letarolta a piacot: csak a nagyon gazdagok és a nagyon szegények   
+ragaszkodtak a hagyományos készülékekhez.<br><br>A Nikai cég pedig folyvást gyarapodott, és   
+kiterjesztette birodalmát a hírközlésre és a magas politikára is. A legtöbb hírügynökség és újság   
+Nikai-érdekeltség lett tíz éven belül, és mindenki sejteni vélte, hogy a Világállam helyi kormányai  
+ csak addig nem buknak meg, amíg szabad utat engednek a Nikai cégnek.<br><br>Akik pedig valamilyen   
+módon megpróbáltak fellépni a cég ellen, kellemetlen helyzetbe kerültek előbb-utóbb. Olyan csinos   
+botrányba keveredtek, magánéletük olyan kínos epizódjai láttak napvilágot, hogy szűkölve kértek   
+bocsánatot a cégtől, és vonultak vissza minél messzebb az emberek tekintetétől.<br><br>Ám egy túl   
+kíváncsi tévészerelő mégis szétszedte az eldobható Nikai tri-dit, és megdöbbenve tapasztalta, hogy a 
+  képernyő mögött egy parányi videókamera van elhelyezve, mely pontosan közvetíti a képernyő előtt   
+ülők minden szavát és mozdulatát. Egy független tri-di állomás világgá repítette a hírt, és a Nikai  
+ konszern hiába tagadott és zsarolt körömszakadtáig, minden kiderült. A Nikai cég olcsó készülékei   
+univerzális, bármikor bekapcsolható családi kémekként működtek, s milliárdokat érő információkat   
+nyújtottak...</h6><br></div>   <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=1&amp;startdate=2012-08-07&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+  
+  <div class="flashbanner" style="width: 468px; height: 60px;">
+  <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash4/cabs/swflash.cab#version=4,0,0,0"
+  id="name" width="468" height="60">
+  <param name="movie" value="images/banners/banner_3.swf">
+  <param name="quality" value="high">
+  <param name="wmode" value="opaque">
+  <param name="flashvars" value="bannerid=3">
+  <embed name="name" src="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_3.swf" 
+    quality="high" 
+    wmode="opaque" 
+    width="468" 
+    height="60" 
+    type="application/x-shockwave-flash"
+    flashvars="bannerid=3"
+    pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
+  </embed>
+  </object>
+  </div>     
+
+</div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(219, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 08, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120825235243id_/http://www.tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "http://piwik.sidripalliance.com/piwik/" : "http://piwik.sidripalliance.com/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.sidripalliance.com/piwik/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+</body>
+</html>

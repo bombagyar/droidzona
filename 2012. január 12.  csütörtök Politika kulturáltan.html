@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=43">Ostoba nigger</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-01-15</span><br><a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=42">Sodi ismét - 18+</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-01-15</span><br><a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=41">Bugreport</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-01-14</span><br><a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=40">Valahol Pesten</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-01-13</span><br><a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=39">A droid, az tudja!</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-01-12</span><br>    </p>
+  </div>
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br><a href="http://www.trueamericandog.com" target="_blank">True American Dog</a><br>    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>Politika kulturáltan</h1>
+<h2>2012. január 12., csütörtök</h2>
+
+A múltkori politikai eszmefuttatásra (mi a fenének írogatok én ilyeneket?!) 
+jött egy válaszlevél Bene Károly úrtól. Íme.<br><h6>  A politikai elemzésedre reflektálnék pár 
+sorban, és érdekelne a válaszod, úgyhogy leírom ide :)<br><br>    Előszöris leszögezném, hogy nem 
+vagyok se jobbos, se balos. Szimplán   csak utálom ezt a politikának nevezett szarságot, ami itthon 
+az elmúlt   10 évben játszódik. Pár pontban összeszedtem a gondolataimat (ha lenne   blogom, lehet 
+ki is írnám oda :))</h6>Ezzel nem vagy egyedül, kedves Károly...<br><h6>  1. Először is a legnagyobb 
+bajom a fideszistákkal van. Nem az értelmes   blogposztot írókkal, hanem azokkal, akik vakon hisznek 
+az orbánizmusban -   merthogy ez már-már vallási szintű HIT. Sőt, ez egy vallás.<br><br>  Próbálj 
+meg egy katolikust meggyőzni arról, hogy nincs Isten.</h6>  Rossz hasonlat. Bármelyik párt körül 
+tonnaszám találsz elvakult híveket, bár természetesen a nagy pártok körül többet. Ezek az emberek 
+egy-egy politikusban látják saját satnya életük beteljesedésének reményét, és ők szoktak az első 
+sorban habzó pofával üvölteni, amikor rájönnek, hogy <span style="font-style: 
+italic;">becsapták</span> őket. Nem ők magukat, á, dehogy.<br><h6>A legtöbb fideszes (az általam 
+ismertek 90%a) ilyen: minden észérvek és   rálátás nélkül istenként tisztelik orbánt, és vakon 
+hisznek minden   szavában, így velük, erről nem lehet beszélni - ezért is írok most   Neked.</h6>A 
+legtöbb jobbikos meg Vona Gábort, illetve a legtöbb MSZP-s a hozzá legközelebbi posztkomcsi 
+istenséget.<br><h6>  2. Szerintem a posztod korrektre sikeredett, nagyjából egyet is értek   vele. 
+Viszont nem tudom, mi alapján nevezted hazugnak az indexet.</h6>  Ó, he. Most jöttél a Holdról, 
+ugye? Az Index az egyik legmocskosabb hírhamisító propagandaújság. S hírhamisítás alatt nem 
+feltétlenül azt kell érteni, hogy mást írnak, mint ami a valóság, hanem mondjuk úgy, <span style="font-style: italic;">más megvilágításba helyezik.</span><br><h6>Két dolgot UTÁLOK a mai 
+jobboldalban, és ezek miatt vetem meg őket teljesen: az egyik a hazudozás.<br><br>  Hogy képes orbán 
+még most is egymillió munkahelyről beszélni?! Nyilván   ez a fent említett vallásosaknak szól, őket 
+meg is lehet fogni vele.</h6>Hát ezt akár a baloldalban is utálhatod. Emlékszel, amikor Bajnai 
+Gordon 800 milliárd euróról beszélt, amit a magyar kisvállalkozások fognak kapni, és még át is 
+sétált átszellemült arccal egy "Európa-hídnak" elkeresztelt papírmasé díszleten? Vagy emlékszel 
+Gyurcsány Ferenc választási reklámjára, amikor a limuzin hátsó ülésén ígérgette, hogy a kormánya az 
+adócsökkentés kormánya? Avagy a 2006-os Orbán-Gyurcsány vitára, amelyben Gyurcsány kifejezetten 
+hazugságnak nevezte, hogy "gyógyszerfelírási díjat" akarna bevezetni a kormány?<br><div style="text-align: justify;"><br>Orbán nem hazudott, hanem azt mondta, terveik szerint 2020-ig 
+egymillió munkahely létesül az országban. Ez egy terv. Mégpedig eléggé leegyszerűsítve fogalmazott, 
+hiszen a munkahelyeket nem a kormány teremti, hanem a versenyszféra, a kormány pedig igyekszik olyan 
+körülményeket teremteni, hogy a versenyszférának jobb legyen. Amit Orbán Viktor mondott, nem egy 
+bármikor számonkérhető ígéret volt, hanem arról beszélt, hogy milyen irányba szeretnék terelgetni az 
+országot. Csak a nagyon egyszerű prolik hiszik azt, hogy az ilyen ígéretek betonba vannak vésve. Aki 
+látott már gazdaságot közelről, tudja, hogy ez csupán egy pillanatnyilag elérhető lehetőség 
+vázolása.<br><br>A baloldal hazugságai azonban valódi hazugságok. Ne felejtsd el például, miért van 
+annyi bedőlt devizahitel. Gyurcsányék éveken át bátorították a lakosságot, hogy adósodjon el svájci 
+frankban, mert "törvény garantálja" a kamatplafont, aztán amikor a haverok szóltak, hogy már elég 
+hülye vett fel lakáshitelt, eltörölték ezt a törvényt, és kezdődhetett a szüret. Ez az igazi 
+hazugság, nem pedig az, ha a kormányfő egy tervet közöl.<br></div><h6>  Az egész kormányzati 
+kommunikáció lószar. Mi az hogy nekünk nem kell az   imf, meghogy oké jöhet, de csak pénzügyi 
+védőhálónak - a vége úgyis az   lesz, hogy térdenállva kuncsorognak, hogy ne essen össze az ország.  
+ Minek itt nagyarcúskodni? (és akkor az ilyen nem-lesz-adóemelés-szerű   maszlagtól eltekintek, 
+legyen ez kampánymaszlagnak betudható...)</h6><div style="text-align: justify;">Az első mondattal 
+egyetértek. Viszont a jelek szerint egyáltalán nem értetted meg a cikkem. A baloldali propaganda 
+természetes, hogy az IMF-es bakit a kormány alkalmatlanságaként lobogtatja, főleg azok felé, akik 
+még egy kis kft-t sem vezettek soha, nemhogy egy országot. (Ami pedig a lakosság többségét jelenti.) 
+Tavaly olyan volt a politikai és gazdasági helyzet, hogy el lehetett hajtani az IMF-et, sőt, el is 
+kellett, mert az ország lerablására készült. Most pedig olyan van, hogy tárgyalni kell velük. 
+Legközelebb majd megint el lesznek hajtva. Arról egyébként nem véletlenül nem beszél a balos média, 
+hogy miről is szólnak ezek a bizonyos tárgyalások. Elég nagy különbség van egy tűzszünet és egy 
+fegyverletétel között. Biztos lehetsz benne, hogy a kormány nem azért tárgyal velük, hogy nyüszítve 
+kérjen elnézést korábbi "pimaszságáért", hanem azért, hogy kompromisszum szülessen az országot 
+felvásárolni és megtartani akarók között, mert a patthelyzet egyiküknek sem jó.<br></div>  <h6>  3. 
+A másik dolog az a demokrácia nyirbálása.</h6><div style="text-align: justify;">Demokr... Jaj, ne 
+röhögtess már! Mi az a demokrácia? Meg tudod fogalmazni? És a melletted ülőnek mi a demokrácia? És a 
+harmadiknak? Soha nagyobb szélhámosságot a történelem során nem találtak ki, mint ezt a szót, 
+amellyel elhitetik a kisemberrel, hogy az ő szaros véleménye, a szaros élete meg a szaros vagyona 
+bárkit is érdekel. Demokrácia nem létezik. Megvalósíthatatlan utópia, akárcsak a kommunizmus. Ideje 
+lenne, ha végre valamelyik kormányunk megmondaná ezt egyenesen és őszintén.<br></div><h6>Nem ők 
+tehetnek róla, hanem mi. Mi, akik megválasztottuk (btw én nem   mentem el szavazni), sőt, annyira 
+megválasztottuk, hogy meglett nekik a   2/3ados többség. Ezzel bizony visszaélnek. 
+Mocskosul.</h6><div style="text-align: justify;">  Miért, mit kellene csinálniuk? Odaengedni a 
+hatalom közelébe a politikai riválisaikat? Ha te egy cég vezetője volnál, megengednéd puszta 
+szívjóságból, hogy néha a takarítónő is odaülhessen az íróasztalodhoz? Igen, kétharmadjuk van, és 
+használják. A balosok meg rinyálnak, hogy nekik kuss a nevük. Így van ez rendjén, a baloldalt 
+egyébként is fel kellene számolni.<br></div><h6>És ez már nem csak a jobboldal, meg az én véleményem 
+- az egész világ   (!!!) ezt mondja. Az EU emiatt b*szogat minket - és okkal. Amit a   
+nyugdíjpénztárakkal csináltak, az nevetséges, csak azért, hogy a 2011es   mérleg ne a béka segge 
+alatt legyen. De több ilyen nem lesz.</h6><div style="text-align: justify;">Az egész világ, 
+csakugyan? Arra a néhány fizetett bértollnokra gondolsz, akik a nagyjából három konglomerátum által 
+fenntartott világlapokban hűségesen megírják a kenyéradó gazdáik véleményét? Te tényleg azt hiszed, 
+hogy az újságok a valóságot írják? Ha öt percet eltöltöttél volna a médiában, akár csak mint 
+hirdetésfelvevő a Kutya magazinnál, tudnád, hogy egyetlen lap sem marad fenn folyamatos szubvenció 
+nélkül. Azt pedig csak akkor kap, ha azt írja, amit a pénzes emberek mondanak.<br></div>  <h6>  4. A 
+mádiáról is írtál, szerintem ez is elég érdekes téma.<br><br>  Az m1 nézhetetlen. Csak a betörések, 
+rablások, stb - helyet cseréltek a   kékfénnyel. Hogy pontosabban mi a bajom, azt mindennél jobban   
+szemlélteti ez:<br><br>  <a href="http://comment.blog.hu/2012/01/03/nem_talalta_a_tuntetest_az_mtv">http://comment.blog.hu/2012/01/03/nem_talalta_a_tuntetest_az_mtv</a><br><br>
+ Tudom, hogy ez csak egy eset - de nem lehet véletlen. És ez jellemzi az egész attitűdöt.</h6><div style="text-align: justify;">És most ez téged miért zavar? Az előbb írtam, hogy a média hogy 
+működik. Az jobb volt, amikor 2006-ban azt hazudta ugyanez a tévé, hogy a Kossuth téren "néhány száz 
+szélsőséges tüntet"?<br></div><h6>  Ha a birka vallásosak nem tudják, mi a helyzet, az nem fáj 
+nekik. Majd szidják a munkaadójukat a kevesebb pénzért...<br><br>  A jobboldalnak egy eszköze 
+maradt: a média. Tény, hogy kihasználják, de   mivel más beleszólásuk nincs a mai magyar 
+egypártrendszerben, teljesen   érthető, hogy minden elérhető eszközzel alá akarják ásni a fidesz   
+önkényuralmát.</h6><div style="text-align: justify;">  A birkákat sosem érdekelte más, mint hogy a 
+következő kormány emelje fel a fizetésüket, és lehetőleg rövidítse le a munkanapjaikat. Pont ezért 
+nem érdekes a véleményük. A média pedig nem a jobboldal eszköze, legalábbis jellemzően nem. Igazából 
+csak mostanában kezd egy kicsit erősödni a jobbos média, amióta a közmédiából kihajigálták a 
+quislingeket.<br></div><h6>5. Konklúzió :)<br>  Nem azt mondom, hogy a fidesz rosszabb, mint az 
+elődei, mert nem így   van, sőt, lehet hogy még jobb is - hosszútávon. Állítom, hogy ha csak   
+45%-al nyerték volna meg a választásokat, sokkal korrektebb lenne a mai   magyar megítélés.</h6><div style="text-align: justify;">  Én viszont úgy vélem, még mindig nem elég kemény a diktatúra. Jó 
+irányba ütnek, de nem elég erősen, és azt hiszik, egyedül is győzhetnek. Tény, hogy a Fidesz-kormány 
+sokkal jobb, mint az eddigiek, sőt, meg merem kockáztatni, hogy a rendszerváltás óta az első tökös 
+kormány. Remélem, őket egy még tökösebb váltja le, ami kíméletlenül leszámol az ország 
+ellenségeivel, leszarva, hogy ki rinyál az "emberi jogokért" és hasonló hülyeségekért. Azokat, akik 
+az országot ki akarták és akarják árusítani, tönkre kell tenni, ki kell forgatni a vagyonukból és 
+kikergetni az országból, vagyis inkább be börtönbe, bármi áron. Mint már mondtam, a diktatúra nem 
+cél, hanem eszköz. Magyarországnak egy szingapúri jellegű rendszerre van szüksége a 
+túléléshez.</div> <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=3&amp;startdate=2012-01-12&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+  
+  <div class="flashbanner" style="width: 468px; height: 60px;">
+  <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash4/cabs/swflash.cab#version=4,0,0,0"
+  id="name" width="468" height="60">
+  <param name="movie" value="images/banners/banner_3.swf">
+  <param name="quality" value="high">
+  <param name="wmode" value="opaque">
+  <param name="flashvars" value="bannerid=3">
+  <embed name="name" src="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_3.swf" 
+    quality="high" 
+    wmode="opaque" 
+    width="468" 
+    height="60" 
+    type="application/x-shockwave-flash"
+    flashvars="bannerid=3"
+    pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
+  </embed>
+  </object>
+  </div>     
+
+</div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(37, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 01, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120116110029id_/http://www.tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+
+<!-- Piwik --> 
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "http://piwik.sidripalliance.com/piwik/" : "http://piwik.sidripalliance.com/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.sidripalliance.com/piwik/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+</body>
+</html>

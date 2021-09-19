@@ -1,0 +1,411 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=216">Fontos kérdés</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-04</span><br><a href="showpost.php%3Fid=210.html">Csatáry, Mátsik és Szegedi</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-07-30</span><br><a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=192">Béerefká did it again...</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-07-01</span><br><a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=176">Pixel gazdát keres</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-06-09</span><br><a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=157">Megvédjük a Főméltóságú úr szobrát?</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-05-14</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br><a href="http://www.trueamericandog.com" target="_blank">True American Dog</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>Csatáry, Mátsik és Szegedi</h1>
+<h2>2012. július 30., hétfő</h2>
+
+<div align="justify">Megmondom őszintén, nem érdekel, hogyan fordul fel   az 
+úgynevezett magyar nemzet, és azon belül az úgynevezett nemzeti   oldal. Kívülről jönnek 
+gyarmatosítani vagy egymás torkát harapják-e el:   nem az én dolgom. Minek foglalkozzak egy 
+életképtelen néppel?<br>    <br>  Ezt a posztot pedig azért írom, mert unom már folyton 
+megválaszolgatni   azt a kérdést, hogy miért nem írok a közvéleményt "lázban tartó" (naná,   
+uborkaszezon van) közéleti kérdéseiről, nevezetesen Szegedi Csanád   "lebukásáról", illetve Csatáry 
+Lászlóról, aki olyan hírhedt háborús   bűnös, hogy eleddig a nevét sem hallotta senki sem. Ezek a 
+dolgok   összefüggenek, és együttesen magyarázzák meg, miért foglalkozom inkább   Pixel kutyámmal és 
+főzéssel ahelyett, hogy megírnám a véleményemet, mint   régen. <br>    <br>  Szóval itt ez a derék 
+jó magyar ember, Szegedi Csanád, akiről hirtelen   különös körülmények között kiderült, hogy bizony 
+zsidó. Legalábbis van   benne némi macesz. Megesik az emberrel az ilyesmi, nekem is volt cigány   
+dédnagyanyám, bár a nevét sem tudom. Az eredmény pedig az lett, hogy a   Jobbik élő lelkiismerete, 
+vagyis hát helyesebb lenne őt mindjárt az   egész nemzet lángpallosú igazságharcosának nevezni, 
+Novák Előd menten   nekiugrott az inogni látszó nemzeti bálványnak, és kiprédikálta őt a   nemzeti 
+oldalról, mint oda nem illő, becsületre és tisztességre nem   méltó elemet. Ez a Novák már csak 
+ilyen, mindig észreveszi a laza köveket a nemzeti oldal bástyafalában, és igyekszik kirugdosni azokat, 
+  mielőtt leomlana miattuk az egész. Igaz, ettől a fal már egyre inkább   svájci sajtra kezd 
+emlékeztetni.<br>    <br>  Szegedi Csanád fura figura. Talán emlékeztek rá, hogy 
+amikor éppen engem   takarított el az útból ez a talpig becsületes Novák Előd, mint   "választási 
+csalót" (azóta két ítéletben is elmarasztalta a bíróság   ezért a hazugságért, de ezt már nem írta 
+ki a Kuruc.infóra) éppen   Szegedi Csanád volt az a jelölt, akinek nagyívű pályáját a Jobbik   
+Berijájának (copyright Bayer Zsolt) értékelése szerint veszélyeztettem.   Később ő volt az, akinek a 
+kedvéért Vona Gábor személyesen baszta át   Szima Juditot, a Tettrekész Magyar Rendőr Szakszervezet 
+elnökét, akinek   megígérte, hogy ha három mandátumot nyernek a 2010-es EP-választásokon,   akkor a 
+lista harmadik helyén található Szegedit visszalépteti Szima   javára, és ezzel mentelmi jogot 
+juttat az elmúlt évek leggusztustalanabb   támadásainak kitett szakszervezeti vezetőnek, egyúttal 
+pedig   konszolidálja a rendkívül erős TMRSZ helyzetét a dolgozói érdekvédelmi   szférában. Ha ez 
+így történt volna, a Jobbik ma gazdagabb lenne egy   rendkívül erős politikai szövetségessel, 
+amelyhez valószínűleg már   kisebb szakszervezetek százai csatlakoztak volna, de a Jobbik   
+ekkoriban inkább a rendkívüli politikai erőt felmutató Betyársereggel, a HVIM-mel és   Budaházy Györggyel látta fontosnak szövetséget kötnie, nem pedig   holmi szimajuditokkal. Így történt, hogy Szimának 
+szemrebbenés nélkül a   szemébe mondta Vona Gábor, hogy felrúgja a megállapodást, és mégis   Szegedi 
+Csanádot, a középszerű joghallgatót küldi Brüsszelbe, elvégre   olyan szépeket tud mondani a 
+magyarságról, hogy ennél több nem is kell. A   TMRSZ azóta gyakorlatilag összeroppant a jogállamot 
+megcsúfoló   ügyészségi támadások alatt - gratulálunk. Így lett Szegedi Csanád   EP-képviselő.<br>   
+ <br>  Az elmúlt két évben Szegedi Csanád tevékenysége gyakorlatilag annyiban   merült ki, hogy 
+rendkívül szép szóvirágokat tett le a nemzet asztalára, s   időnként egyes brüsszeli asztalokra is. 
+Beszédeit ujjongva hozta az   összes nemzeti radikális portál, mások sajnos nem. De mi azért szerettük. Közben azért volt némi   sutymorgás a 
+háttérben, hogy hogy képzeli ez a Szegedi Csanád, hogy már a   harmadik népnemzeti ruhaboltot 
+nyitja, de hát valakinek azt is kell   csinálnia, mégsem maradhatunk buggyos lajbi és visszacsapó íj nélkül, ha   beüt a zombi-apokalipszis. Mindeközben a Jobbikban gőzerővel tört előre   az 
+aluliskolázottak lobbicsoportja, az élen Novák Előddel, aki 2010-ben   ugyan még Szegedi árnyékában 
+evezgetett az áhított hatalom felé,   mostanra viszont már olyan szilárdnak véli pozícióját, hogy 
+neki mert   ugrani egykori gyámolítójának. Addig is, amíg erre alkalmat szerzett,   megállás nélkül 
+pofázott hülyeségeket és villogott a médiában a különben   tőlem ellesett performance-okkal, mint 
+például Superman-jelmez   osztogatása a szerinte "álláshalmozó" politikusoknak, egymásra   
+montírozott Orbán- és Rákosi-arcképek falra akasztása, illetve   heterófelvonulás szervezése, mint "eredeti ötlet". (De hagyjuk ezt, hiszen a Jobbik a közrendvédelmi 
+telepek   ötletét is a Bombagyár blogról vette, vagy a cigánybűnözés kifejezést is nekem köszönhetik. És még ők rinyálnak, ha a Fidesz   lenyúlja egy-egy javaslatukat...) Az állandó médiajelenléttel Novák   egyfajta erkölcsi vezető szerepet biztosított magának a 
+Jobbik szavazótábora   szemében, és irányításával egyre inkább kinyílt azoknak a csipája, akik   nyolc 
+általánossal vagy hasonlóan szerény "végzettséggel" keveredtek a   Jobbik parlamenti frakciójába. 
+Jelen pillanatban ádáz küzdelem folyik a   színfalak mögött az iskolázott, ennek okán konszolidált 
+gondolkodású   képviselők és a Novákhoz tartozó ultraradikális, ám a világról nem sokat   tudó 
+jobbikos "honatyák" között. Utóbbiak állandóan a Jobbik   "felszalámizásáról" prédikálnak, miközben ők 
+maguk tesznek ezért a   legtöbbet - talán nem is annyira véletlenül. Megjegyzem, Novák Elődről   már 
+évekkel ezelőtt leírtam, hogy szerintem vakond a Jobbikban, és a   feladata annak szétverése, 
+ahogyan Petrasovics Anna a szocdemeket,   Torgyán a kisgazdákat bontotta néhány éve atomokra. Ezt a 
+véleményem   máig fenntartom, hiszen továbbra is ezen munkálkodik.<br>    <br>  Egyszóval így 
+szakadt ketté a Jobbik, bár ez kívülről még nem látszik.   Egészen addig fog ez tartani, míg egy 
+napon Novák magát Vona Gábort is el nem kezdi kóstolgatni, mondván, hogy gyengekezű vezető, aki 
+helyett   erősebb, radikálisabb kellene - természetesen ő maga. Borítékolható,   hogy a Kuruc.infón 
+ugyanazok a szófordulatok fognak megjelenni Vona   Gáborról, amelyek mindenkiről, akit Novák, 
+úgymond, leleplezett:   "hazugságspirálba keveredett", "nem hallgathatunk tovább", "visszaélt   
+jóindulatunkkal", és így tovább. Az is ki lesz derítve szegény Vonáról,   hogy drogos, 
+természetesen. Mindez akkor fog megtörténni, ha a pártelnök   elkövet valamilyen hibát, akár rajta 
+kívülálló okból. Egyértelműen   látható Novák Előd ezen törekvése, hiszen évek óta támadja és 
+próbálja   fúrni azokat a szürke eminenciásokat, akiknek a neve nem sokat mond a   kívülállóknak, de 
+Vona belső köréhez tartoznak, és tanácsadóként éppen   az a feladatuk, hogy az elnököt az ilyen és 
+ehhez hasonló támadásoktól   megvédjék.<br>    <br>  Szegedi Csanád éppen úgy járt, mint Csurka 
+István. Szárnya alá vette a   fiatal, tehetséges (-nek látszó) Novák Elődöt, beengedte belső körébe, 
+  megosztotta vele titkait. Lám, amikor Csurkáról kiderült, hogy   sikkasztja a pártpénzeket, Novák 
+volt az első, aki rohant a bíróságra   feljelenteni, majd pózba vágta magát a kamerák előtt, hadd 
+lássák, ki   volt az a zseniális leleplező, aki elsőként átlátott a szitán. Szegedi   Csanádot egy 
+kétes erkölcsű pasas kereste fel, és beszélgetett vele   arról, ami egyébként sosem volt szigorú 
+titok, hogy tudja ám, hogy   Szegedi zsidó származású. Szegedi, tudván, hogy ennek megfelelő 
+formában   való megszellőztetése a karrierje végét jelentheti, pénzt ajánlott a   hallgatásért. Az erről készült hangfelvétel azonban valamiért a Novák Előd szerkesztette Kuruc.infónál landolt - pedig milliókat ígért Szegedi a hallgatásért. Ezek szerint valaki még többet adott. A 
+hangfelvételen különben egy sikeres zsarolás hallható, nem pedig egy korrupt politikus kísérlete, hogy megvesztegesse az őt leleplezőt. Novák azonban,   mint gyakorlott spindoctor, rutinosan fordította ezt Szegedi Csanád   
+ellen, és robbantotta őt ki egyszer s mindenkorra a nemzeti ellenállás említett svájcisajt-bástyafalából. Ami, tegyük hozzá, nemcsak   aljas, de fölösleges húzás is volt: Szegedi már 
+rég nem veszélyeztette   pozícióját, hiszen korábban elvesztette alelnöki mandátumát, és esélye   
+sem volt, hogy visszaszerezze. Novák egész egyszerűen kicsinyes bosszút   állt valamiért, vagy 
+egyszerűen azért rúgott bele harcostársába, mert   jólesik neki a földön fekvőt rugdosni. Ilyen ez a 
+Novák Előd, láthattuk   sokszor. Talán mert gyerekkorában mindvégig őt rugdosták az iskolában?<br>   
+ <br>  És itt meg is érkezünk a Csatáry-ügyhöz. (Érdekesség: mind Csatáry   László, mind pedig 
+Mátsik György, a Mansfeld-per egykori ügyésze alig   két-két sarokra laknak tőlem.) Itt ez az 
+öregúr, aki állítólag zsidókat   mészárolt. Állítja ezt egy kétes hírnevű zsidó propagandaszervezet, 
+  amely évtizedek óta vádol hamisan embereket zsidók elleni   bűncselekményekkel, azon 
+egyszerű okból, hogy bőkezű támogatói csak   addig bőkezűek, amíg a nagy nácivadászok eredményeket 
+tudnak felmutatni.   Rákiabáltak tehát erre a Csatáryra, hogy ő bizony háborús bűnös, és   mintegy 
+varázsütésre a média máris tényként kezeli, hogy igen, az. Nem Cs.   László, nem kitakart arc, dehogyis. 
+Csatáry László, a legkeresettebb   háborús bűnös, aki így néz ki, és itt és itt lakik. Bezzeg ha 
+csak egy   fiatal lányt fojtott volna meg egy pécsi parkban, akkor járna neki az   ártatlanság 
+vélelme, még a jogerős ítélet után is.<br>    <br>  Nekem fogalmam sincs, ki ez a Csatáry László, és 
+mit csinált több, mint   harminc évvel azelőtt, hogy én megszülettem. Azt viszont tudom, hogy az   
+ártatlanság vélelme a modern jogállam (és nem a demokrácia!) egyik   dogmatikai alapköve. Ha bárki is tüntet itt valamiért, akkor csakis   azért lenne szabad, hogy ez a reszketeg öregember minimum annyira 
+részesüljön   méltányos elbánásban, mint egy gyilkos kóborcigány. De én ilyen megszólalást még nem hallottam. Azokat, akik   zaklatják, 
+és az első felszólításra nem takarodnak el, gumibottal, viperával kellene szanaszét verni, mert nem   néhány újlipótvárosi fűszívó szarházi 
+feladata az igazságszolgáltatás,   hanem a bíróságé. És itt érkezünk vissza a Jobbikhoz. Hol van ez 
+az   állítólag demokratikus értékek mellett elkötelezett párt, amikor ennyire   nyilvánvaló ziccert 
+kapnak, immár sokadszorra, a nem túl nagy   észkombájnokkal ellátott vadliberális lobbitól? Verni 
+kellene az asztalt   mindenhol, hogy hagyják békén Csatáryt, ellentüntetéseket szervezni a   
+jogállam felrúgását követelő szabadcsapatok ellen, és ha már vannak,   felheccelni ellenük a militáns 
+szélsőjobboldalt is, hadd legyen egy kis utcai adok-kapok. A politikába ennyi belefér, pláne Kelet-Európában.   Ehelyett a Jobbik azzal van elfoglalva, hogy saját 
+ex-alelnökét ekézze   állítólagos becstelensége és kicsit (?) zsidó származása miatt is. Meg   lehet 
+nézni a Szegedi Csanáddal foglalkozó cikkek alatt a kommentárokat a   Kuruc.infón: azok, akik eddig 
+üvöltve tapsoltak Szegedinek egy-egy jól   sikerült szóvirág után, most egytől egyig a vérét 
+követelik, és a   "becstelenséget" leleplező Novák Elődnek tapsolnak. Hát ez a Jobbik   jövője: 
+törtető-taposó, iskolázatlan parvenük és agyamputált mélyradikálisok, akik   nem látják, mi a dolguk, mit kell 
+tenniük a nemzetért, hanem éppen arra   acsarkodnak, akire a legegyszerűbb. Ha esetleg nem veszik észre, 
+most éppen   kire kell, majd Novákék megmondják nekik.<br>    <br>  Mátsik György, a Mansfeld-per 
+egykori ügyésze pedig, aki két fiatalkorúra kért   halálbüntetést egyszerű vagyon elleni bűncselekmény 
+miatt, mondván,   hogy azok a kommunista államrend ellen szervezkedtek, eközben békésen   éldegél 
+Nap utca 21. szám alatti otthonában, és a kutya nem zaklatja.   Nem tüntetnek a háza előtt (na jó, a 
+múltkor egy kicsit azért igen, és   pont Novák Előd vezetésével), nem ragasztgatják tele matricákkal 
+az   ajtaját, nem izzik a levegő a vérét kívánó skandálástól. Biszku Béla   szintén röhög a markába 
+a villájában. A nagy nemzeti radikálisok még   nekem is több életveszélyes fenyegetést küldtek 
+például egy   Kárpátia-album nem megfelelően tisztelettudó kritikájárt, mint ezeknek a   
+gyilkosoknak. Ennyit tudnak ezek: sajátjukba marni, szélhámosoknak   tapsolni, de az igazi ellenség 
+előtt meghunyászkodni, kurrogva a   vackukra takarodni. S közben magukban zsidózni, mert hallották, 
+hogy   abban van némi igazság.<br>    <br>  Van. De ez a magyarokon már nem segít. Az átlag magyar 
+vagy külföldre   menekül, vagy itt marad és hülye lesz. Számomra a maradás csupán   szociotrip. Egy 
+életképtelen népség végvonaglását nézem, amint saját   szarjukban fetrengve egymást fejét nyomkodják 
+bele. Közben eszükbe sem   jut, hogy például az etruszkok sem hiányoznak a kutyának sem. És azt sem  
+ tudja senki, ki volt az utolsó etruszk nemzeti párt alelnöke.<br>    <br>  </div>     <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=1&amp;startdate=2012-07-30&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+  
+  <div class="flashbanner" style="width: 468px; height: 60px;">
+  <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash4/cabs/swflash.cab#version=4,0,0,0"
+  id="name" width="468" height="60">
+  <param name="movie" value="images/banners/banner_3.swf">
+  <param name="quality" value="high">
+  <param name="wmode" value="opaque">
+  <param name="flashvars" value="bannerid=3">
+  <embed name="name" src="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_3.swf" 
+    quality="high" 
+    wmode="opaque" 
+    width="468" 
+    height="60" 
+    type="application/x-shockwave-flash"
+    flashvars="bannerid=3"
+    pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
+  </embed>
+  </object>
+  </div>     
+
+</div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(210, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 07, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120804045405id_/http://www.tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "http://piwik.sidripalliance.com/piwik/" : "http://piwik.sidripalliance.com/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.sidripalliance.com/piwik/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+</body>
+</html>

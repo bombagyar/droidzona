@@ -1,0 +1,454 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=157">Megvédjük a Főméltóságú úr szobrát?</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-05-14</span><br><a href="showpost.php%3Fid=156.html">Nemzetközi terrorista lettem</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-05-13</span><br><a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=153">Hegesztőtanfolyam</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-05-06</span><br><a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=150">Képregény: Rózsimisi vs. Tomcat</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-05-01</span><br><a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=148">Mentség</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-04-29</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br><a href="http://www.trueamericandog.com" target="_blank">True American Dog</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>Nemzetközi terrorista lettem</h1>
+<h2>2012. május 13., vasárnap</h2>
+
+<div style="margin-top: 4px; margin-right: 4px; margin-bottom: 4px;       
+margin-left: 4px; background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font-family: Verdana,   
+    Arial, Helvetica; font-size: 12px; "><div style="text-align: justify; ">A hétvégén Londonban   
+jártam.     Odaérkezvén megtudtam: az nem ám csak úgy van, hogy az embert felmentik a terroristaság  
+ koholt   vádja   alól, hanem be is kell bizonyítani, hogy ártatlan.</div><div style="text-align:   justify;   "><br></div><div style="text-align: justify; ">Hogy miért voltam   
+Londonban kevesebb, mint   húsz órát,   az mellékes, a megfelelő hatóságok már úgyis tudják. Elég az 
+  hozzá, hogy Ferihegyen az   útleveleket -   vagyis esetemben a személyi igazolványt - ellenőrző   
+rendőr arcára határozott   döbbenet ült ki, amikor   magában azonosította, ki is az a Polgár Tamás,  
+ és a "jó utat" felkiáltás   is észrevehetően   mesterkéltre sikeredett. Na, megint egy gyökér,   
+akinek nem tetszik a pofám,   konstatáltam, és   elsétáltam a megfelelő kapuhoz.</div><div style="text-align: justify;   "><br></div><div style="text-align: justify; ">A két és fél órás   
+repülés egyetlen érdekes momentuma,   hogy jó darabig   vissza kellett tartanom a röhögést, ugyanis  
+ az utaskísérői feladatokat a   Ryanairnél   nyilvánvalóan halálosan komolyan vett   polkorrektség 
+okán egy buzi, egy néger és egy   ázsiai nő látták   el - mi több, visszafelé is,   pedig az egy 
+másik gép volt, másik legénységgel.   Londonban szitáló eső   és hideg, de a hajam   rendben, hát 
+irány a terminál. Odanyomtam a személyit   az üvegkalickában kucorgó   nőnek, az   megnézte, 
+visszaadta, és azt mondta, hogy&nbsp;<i>thank   you.&nbsp;</i>Mentem volna tovább,   de   hirtelen 
+elém pattant két fegyvert viselő pasas, és ők is   látni szerették volna. Odaadtam.     Megnézték, 
+majd közölték, hogy velük kell mennem. Mit lehet   tenni? Mentem.</div><div style="text-align: 
+justify; "><br></div><div style="text-align: justify;   ">Egy kis     kihallgatóhelyiségbe kísértek, 
+leültettek, és ők is leültek velem szemben. Rajzolni sem   tudnék     britebb pofákat. Az egyik egy 
+sovány arcú, kifejezéstelen tekintetű pasas szürke   hajszálcsíkos     öltönyben, csak 
+a&nbsp;<i>Property of Intelligence   Service&nbsp;</i>feliratú&nbsp;bélyegző   hiányzott   a 
+homlokáról. A másik, egy nagydarab rendőrforma   volt, amolyan XXI. századi Scotland   Yard-nyomozó. 
+  Eltekintve attól, hogy a nevüket, vagy hogy   miféle cégnek dolgoznak elfelejtették   közölni, 
+rendkívül   udvariasak és barátságosak   voltak.</div><div style="text-align: justify;   
+"><br></div><div style="text-align: justify; ">- Arra   kíváncsiak, miért emeltek ellenem otthon   
+vádat terrorcselekmény   előkészülete miatt, igaz? -   kérdeztem.</div><div style="text-align:   
+justify; ">- Erre is rá fogunk   térni. Először az adatait   kell felvennem.</div><div style="text-align: justify; "><br></div><div style="text-align: justify;   ">Felírta az ilyenkor   
+szokásos dolgokat, név, anyja neve, születési hely   és idő, majd közölte,   hogy nem vagyok   
+letartóztatva, de a Terrorism Act 2000 értelmében   terroristagyanús személynek   tekintenek, ezért  
+ ki fognak hallgatni. Ha megtagadom a válaszadást,   letartóztatnak. Ha valótlan   választ adok,   
+letartóztatnak. Ha úgy látják a válaszaimból, hogy   szükséges, akkor is   letartóztatnak. A végén   
+egyébként tényleg letartóztattak, de ne szaladjunk   előre.</div><div style="text-align: justify;   
+"><br></div><div style="text-align: justify; ">A   faggatózás azzal   kezdődött, hogy miért jöttem   
+az országba, meddig kívánok maradni, és hol fogok   megszállni. Mindent   gondosan jegyzeteltek.   
+Kérdezték, ki az, akihez megyek. Honnan ismerem? Miért   most megyek? Miért   van nálam kamera?   
+Otthon mivel foglalkozom? Mi a szakmám? Hol tanultam? És hol   tanultam meg   angolul? Ezen azért is 
+  fennakadtak, mert megítélésük szerint "perfectly" beszélem a   nyelvüket,   noha soha életemben 
+nem   jártam angol nyelvű országban. Elmagyaráztam nekik, mi az a   demoscene,   hogyan jártam be 
+Európát,   és hogy kora tizenéves korom óta használom a nyelvet, amióta   szöveges   kalandjátékok 
+léteznek.   Beszélni pedig, mint a legtöbben, filmeket nézve tanultam   meg.</div><div style="text-align:   justify; "><br></div><div style="text-align: justify; ">- Az ember   nézi a   
+filmeket éveken át   felirat nélkül, aztán ha már érti a&nbsp;<i>Blöfföt,</i>&nbsp;akkor nagyjából   
+  kész is van -   mondtam.</div><div style="text-align: justify; "><br></div><div style="text-align: 
+    justify;   ">Ezen jót röhögtek, mert kiderült, hogy mindketten Guy Ritchie-fanok. Elkezdtek 
+idézni     belőle.   Én is. Megbeszéltük.</div><div style="text-align: justify; "><br></div><div style="text-align:   justify; ">Jöttek a további kérdések. Mivel foglalkozik a családom? Mielőtt a   
+  szüleim nyugdíjba   mentek, mit csináltak? Van-e testvérem, hány éves, neki van-e családja? Van-e  
+   barátnőm, hogy   hívják, hol dolgozik, mit csinál? Miután feltérképezték ezt a hátteremet is, 
+jöttek     az érdemi   kérdések. A vallás kérdését hamar tisztáztuk, hogy tényleg hindu vagyok, 
+merthogy a     krisnások   azok, aztán az öltönyös nekem szegezte a kérdést:</div><div style="text-align: justify;       "><br></div><div style="text-align: justify; ">- Tamás! Maga 
+nemzetiszocialista?</div><div style="text-align: justify; ">- Nem.</div><div style="text-align: 
+justify; ">- De biztos, hogy nem       vall nemzetiszocialista nézeteket?</div><div style="text-align: justify; ">- Nem, de ha vallanék   is,     attól még nem lennék 
+terrorista.</div><div style="text-align: justify; ">- Ez igaz, de     kapcsolatban   áll-e 
+nemzetiszocialista szervezetekkel?</div><div style="text-align: justify; ">-     Nem.</div><div style="text-align: justify; ">- Kapcsolatban áll-e a Jobbikkal?</div><div style="text-align:   
+justify; "><br></div><div style="text-align: justify; ">"Dzsobbik"-nak     mondta.&nbsp;Tetszik 
+érteni:   a "Dzsobbik" egy terrorszervezet, oda kell rá     figyelni.</div><div><br></div><div style="text-align:   justify; ">- Nem. Nem vagyok és nem is     voltam soha tagja.</div><div style="text-align: justify; ">-   És a Magyar Gárdának?</div><div style="text-align: justify; ">- 
+Annak sem.</div><div style="text-align: justify; ">- És más     nacionalista szervezetnek?</div><div style="text-align:   justify; ">- Másnak sem.</div><div style="text-align: justify; ">- Ismeri-e a 
+BNP-t?</div><div style="text-align: justify; ">- A     British National Party-t? Persze.</div><div style="text-align:   justify; ">- Kit ismer     belőle?</div><div style="text-align: justify; ">- 
+Személyesen senkit, csak   tudom, hogy van egy     ilyen párt.</div><div style="text-align: justify; 
+">- Senkivel sincs   kapcsolata?</div><div style="text-align: justify; ">- Nincs. De tudtommal az 
+egy legálisan működő   párt, ahogy a Jobbik     is. Maguk haragszanak a nemzeti 
+érzelműekre?</div><div style="text-align:   justify; ">- Hát, tudja,     sok terrorista volt nemzeti 
+érzelmű a történelemben.</div><div style="text-align: justify; ">-   Ahogy   demokrata is. Kérdezze 
+meg az afgánokat vagy az   irakiakat.</div><div style="text-align:   justify;   ">- Maga 
+skinhead?</div><div style="text-align:   justify; ">- Nem.</div><div style="text-align:   justify; 
+">- És hallgat skinheadzenét?</div><div style="text-align: justify;   ">- Nem.</div><div style="text-align: justify; ">- Miért nem?</div><div style="text-align: justify;   ">- Mert   
+szar.</div><div style="text-align: justify; ">- És mit   hallgat?</div><div style="text-align:   
+justify; ">- Ha a politikai töltetű zenékre kíváncsi, például   Ismerős   Arcokat.</div><div style="text-align: justify; ">- Az miféle zene?</div><div style="text-align:   justify; ">-   
+Jazzrock.</div><div style="text-align: justify; "><br></div><div style="text-align:   justify;   
+">Felírták ezt is. Gondolom, később végignézték az összes IA-számot a     YouTube-on.</div><div style="text-align: justify; "><br></div><div style="text-align: justify; ">-     Úgy értesültünk, 
+hogy   nem szereti a zsidókat.</div><div style="text-align: justify; ">- Ők sem     engem. A 
+cigányokat pedig   elfelejtette felsorolni.</div><div style="text-align: justify; ">- Mi a     baj a 
+  cigányokkal?</div><div style="text-align: justify; ">- Bizonyos bűnözési     
+statisztikák.</div><div style="text-align: justify; "><br></div><div style="text-align: justify;     
+">Ebben a kérdésben   meglepően megértőnek bizonyultak. Biztos náluk sem egy matyóhímzés a romák     
+kultúrája.</div><div style="text-align: justify; "><br></div><div style="text-align: justify; ">- De 
+    a zsidókkal mi   baja?</div><div style="text-align: justify; ">- Nem kifejezetten a zsidókkal,   
+hanem a   zsidó   politikai lobbival.</div><div style="text-align: justify; ">- A zsidó   
+világösszeesküvésre     gondol?</div><div style="text-align: justify; ">- Ó, dehogyis, megvan nekünk 
+  a saját belföldi     összeesküvésünk, bár mostanság szerencsére gyengélkedik.</div><div style="text-align: justify;     "><br></div><div style="text-align: justify; ">Helyre kis   
+szemantikai vita kerekedett a dologból,     végül elővettem a Bombagyár Rádióban egykor elhangzott,  
+ amúgy valóban frappáns érvet, hogy akikről     beszélünk, voltaképpen zsidó vallási szélsőségesek,  
+ és a leghelyesebb így nevezni őket.</div><div style="text-align: justify; "><br></div><div style="text-align: justify; ">- Tudja, van egy pár     zsidó, akik szó szerint értelmezik, hogy ők   
+valami kiválasztott, felsőbbrendű nép, és eszerint     próbálják kezelni a magyarokat.</div><div style="text-align: justify; ">- És kik a     magyarok?</div><div style="text-align: justify; ">-   
+Hallott már Szabó Dezsőről?</div><div style="text-align: justify; ">- Nem.</div><div style="text-align: justify; ">- Ő egy költőnk volt,     és ő fogalmazta meg ezt szépen: magyarnak   
+lenni egy sorsközösség, amibe bárki     beletartozhat.</div><div style="text-align: justify;   
+"><br></div><div style="text-align: justify;     ">Ezt aztán jó sokáig kellett magyarázni nekik,   
+kitérve a Szent Korona eszmeiségére is, miszerint a     magyar korona nem leigáz és ural másokat,   
+mint például az ő királyaik, hanem egy eszmei-politikai     közösséget jelképez, amihez csatlakozni  
+ lehet. Így volt része régen Magyarországnak például     Horvátország vagy Erdély, mint a Szent   
+Korona országai.</div><div style="text-align: justify;     "><br></div><div style="text-align:   
+justify; ">- Ha valaki nem a nemzet hagyományai szerint él,     azzal Ön mit csinálna?</div><div style="text-align: justify; ">- Hát ez attól függ, mit     csinál.</div><div style="text-align:   
+justify; ">- Kitoloncoltatná? Vagy koncentrációs táborba     csukatná?</div><div style="text-align:  
+ justify; ">- Mondom, attól függ. Maguknál talán nem     bűncselekmény gyalázni a királyi   
+családot?</div><div style="text-align: justify; ">- De,     az.</div><div style="text-align:   
+justify; ">- Na látja.</div><div style="text-align: justify;     "><br></div><div style="text-align: 
+  justify; ">Látták. Továbbléptünk.</div><div style="text-align:     justify; "><br></div><div style="text-align: justify; ">- Ki a politikai példaképe?</div><div style="text-align: justify; ">-  
+ Horthy Miklós.</div><div style="text-align: justify; ">- Ő     kicsoda?</div><div style="text-align:   justify; ">- Magyarország kormányzója volt, és az egyetlen     magyar, aki 
+tengeri ütközetet   nyert.</div><div style="text-align: justify; ">- Kik ellen?</div><div style="text-align: justify;   ">- Sajnos éppen Önök ellen.</div><div style="text-align: justify; ">- 
+    Á... Biztos rossz napunk   volt.</div><div style="text-align: justify; ">- Az biztos.</div><div style="text-align: justify;   "><br></div><div style="text-align: justify; ">Elmeséltem nekik, 
+hogyan     pofozta fel Horthy a   nyilasokat az Operában, és hogyan próbált kiugrani a háborúból, s 
+ezért hogyan     tartóztatták le   őt és családját a németek. A nácikérdést kipipáltuk.</div><div style="text-align:     justify;   "><br></div><div style="text-align: justify; ">- Volt 
+katona?</div><div style="text-align:       justify; ">- Voltam.</div><div style="text-align: 
+justify; ">- Milyen rendfokozatban?</div><div style="text-align: justify; ">- Tizedes.</div><div style="text-align: justify; ">- Milyen       fegyvernemnél?</div><div style="text-align: justify; 
+">- Híradó voltam.</div><div style="text-align:       justify; ">- Akkor ki van képezve katonai 
+kommunikációs eszközök használatára?</div><div style="text-align: justify; ">- Ha arra gondol, hogy 
+tizennégy évvel ezelőtt úgy száz méter       távolságról láttam egy szarrá rohadt zöld furgont, ami 
+még a hatvanas évekből maradt ott, és       meglepetten hallottam, hogy annak én vagyok a 
+parancsnoka, akkor igen, ki vagyok.</div><div style="text-align: justify; ">- De a fegyverekhez ugye 
+ért?</div><div style="text-align: justify;       ">- El tudok sütni egy puskát, ha erre 
+gondol.</div><div style="text-align: justify; ">- Úgy értem,       kiképezték a fegyveres 
+harcra?</div><div style="text-align: justify; ">- Igen, öt skulót   ellőttem     egy Kalasnyikovból, 
+és majdnem lőttem pisztollyal is, de beragadt.</div><div style="text-align:     justify; ">- 
+Robbanóanyagokról kapott kiképzést?</div><div style="text-align:   justify; ">- Kaptam     volna, de 
+pont akkor gyengélkedőn voltam.</div><div style="text-align:   justify; ">- Milyen     robbanóanyag 
+volt?</div><div style="text-align: justify; ">- A gyengélkedőn   semmilyen. Amúgy     
+trotil.</div><div style="text-align: justify; ">- Milyen szintű kiképzést   adtak?</div><div style="text-align: justify; ">- Mondom, hogy nekem semmilyet. Amúgy kábé ennyit:   itt ez a darab    
+ szappan, belenyomod ezt a hegyes holmit, meggyújtod a kanócot, leteszed és arrébb   mész.     
+Bumm.</div><div style="text-align: justify; "><br></div><div style="text-align: justify;   ">Kissé   
+  furcsállva írták fel mindezt, de hát szégyellje magát Magyar Honvédség.</div><div style="text-align:     justify; "><br></div><div style="text-align: justify; ">- Volt-e   
+letartóztatva a hazájában     bűncselekmény miatt?</div><div style="text-align: justify; ">-   
+Körülbelül negyvenszer. A legtöbb     esetben jogtalanul, amit később bíróság is   
+kimondott.</div><div style="text-align: justify; ">-     Mondja el, mikor volt az első?</div><div style="text-align: justify; "><br></div><div style="text-align: justify; ">Hosszasan meséltem nekik  
+ rapszodikus viszonyomat a magyar     rendőrséggel, a tévéostrom éjszakájától napjainkig. Persze azt 
+  is el kellett magyarázni, mi volt a     tévéostrom, hogyan verték a rendőrruhába öltözött bűnözők  
+ 2006-ban az embereket az utcán. Erről     fogalmuk sem volt.</div><div style="text-align: justify;  
+ "><br></div><div style="text-align:     justify; ">- Micsoda? Lovasrendőrök karddal?</div><div style="text-align: justify; ">-     Igen.</div><div style="text-align: justify; ">- Rendes, éles   
+kardokkal?</div><div style="text-align:     justify; ">- Igen.</div><div style="text-align: justify; 
+  ">- De hát ez hihetetlen! És nem sérült   meg   senki?</div><div style="text-align: justify; ">- 
+Én   egy srácról tudok, akinek levágták két   ujját.   Másoknak gumilövedékkel lőtték ki a szemét, 
+vagy   viperával verték össze. Mostanra ez már   bizonyított   tény, a kormány törvényt is hozott az 
+akkor   letartóztatottak   rehabilitálására.</div><div style="text-align: justify; ">- De miért 
+csináltak   ilyet?</div><div style="text-align: justify; ">-   Mert a kormány erre utasította őket. 
+Mondom,   akkoriban nem sokban   különböztünk Milosevics   Szerbiájától, csak éppen az EU 
+jóváhagyásával   történt minden. Remélem,   ezek után érthető, hogy miért   írtam akkoriban keményen 
+kormányellenes   blogot, és miért próbáltak a   legváltozatosabb módokon   elhallgattatni?</div><div style="text-align: justify; "><br></div><div style="text-align: justify; ">Az öltönyös, amelyik   
+addig nem sokat szólt, megkérdezte:</div><div style="text-align: justify; "><br></div><div style="text-align: justify; ">- Azt mondta, a legtöbb esetben jogtalanul tartóztatták le.</div><div style="text-align: justify; ">- Így van.</div><div style="text-align: justify; ">- Ezek szerint   
+volt, amikor nem?</div><div style="text-align: justify; ">- Igen, egyszer pofán vágtam egy   
+parlamenti képviselőt.</div><div style="text-align: justify; "><br></div><div style="text-align:   
+justify; ">Derültség.</div><div style="text-align: justify; "><br></div><div style="text-align:   
+justify; ">- Mit csinált?</div><div style="text-align: justify; ">- Pofán vágtam egy   
+képviselőt.</div><div style="text-align: justify; ">- De miért?</div><div style="text-align:   
+justify; ">- Mert egy köcsög, azért.</div><div style="text-align: justify; ">- Milyen   
+képviselő?</div><div style="text-align: justify; ">- A Jobbik alelnöke.</div><div style="text-align: 
+  justify; ">- Á!</div><div style="text-align: justify; "><br></div><div style="text-align: justify; 
+  ">Többet nem is tért vissza a "milyen kapcsolata van a Dzsobbikkal" téma.</div><div style="text-align: justify; "><br></div><div style="text-align: justify; ">Megkérdeztem, a kitüntető 
+  figyelmet ugye a magyar   hatóságoknak köszönhetem? Mert   nyilván ők szóltak ide és adtak rólam   
+információkat.</div><div style="text-align: justify;   "><br></div><div style="text-align: justify;  
+ ">- Hát, ezt nem   erősítjük meg, de nem is tagadjuk -   szólt a felelet.</div><div style="text-align: justify;   "><br></div><div style="text-align: justify;   ">Lassan kifogytak a   
+kérdésekből. Közölték, hogy most   már látják, hogy a riasztás csak vaklárma   volt, és valószínűleg 
+  nem vagyok terrorista. Ettől   függetlenül a törvény arra kötelezi őket, hogy   ujjlenyomatot és   
+DNS-mintát vegyenek tőlem, illetve   fényképeket készítsenek. Ehhez pedig formálisan   őrizetbe kell 
+  venniük.</div><div style="text-align: justify; "><br></div><div style="text-align:   justify; ">- 
+Ne   aggódjon, el   fogjuk rögtön engedni - nyugtatott a fehér inges - de rabosítani csak   azt 
+lehet,   aki őrizetben   van.</div><div style="text-align: justify; "><br></div><div style="text-align:   justify; ">Így aztán   írtak egy újabb papírt, amin az állt, hogy őrizetbe 
+vagyok   véve, és   előszedték a fekete trutymót,   az ujjlenyomat-rögzítő lapot meg a kis kefét, 
+amivel   nyálmintát   vesznek. Odaállítottak a falhoz,   és minden irányból, még hátulról is 
+lefényképeztek.     Kipakoltatták a zsebeimet, lefotózták a   holmijaimat is, még a 
+papírzsebkendőket is. Kézmosás után     megköszönték az együttműködést, és   közölték, hogy 
+beléphetek az UK-ba, nem vagyok     terrorista.</div><div style="text-align: justify;   
+"><br></div><div style="text-align: justify; ">-     De ha nem vagyok terrorista, minek maguknak ez 
+a   sok adat rólam? - kérdeztem.</div><div style="text-align: justify; ">- Mert a törvény   
+előírja.</div><div style="text-align: justify; ">-     Hát, akkor Isten óvja a királynőt.</div><div style="text-align: justify; ">- Úgy van.</div><div style="text-align: justify; "><br></div><div style="text-align: justify; ">Így történt, hogy négy     órával később érkeztem meg a szállásomra.   
+Előtte ettem egy curryt egy indiai kifőzdében. Evés   közben   bejött valami pocsolyarészeg angol   
+slummy, aki korábban egy négert inzultált a   buszmegállóban, és   mindenáron belém akart kötni, 
+mert   szerinte bevándorló vagyok. Kicsaptam elé   a reptéren kapott   papírt: nesze, vazzeg, 
+nemhogy   bevándorló, hanem terrorista is, szóval jobb,   ha elhúzol.   Elkerekedett a szeme, 
+dadogva bocsánatot   kért és tényleg elhúzott. Hasznos   papír.</div><div style="text-align: 
+justify; "><br></div><div style="text-align: justify; ">A BRFK   természetesen   megint jön némi 
+lóvéval emiatt. A bombaügy   miatti kártérítési per tétjét   megemeltem néhány nullával:   nem szép 
+dolog valakit nemzetközi   terroristának nyilvánítani húsz   kiló cukor miatt. Annak   
+a&nbsp;szarfaszú gyökérnek pedig, aki   Londonba telefonálgatott, üzenem,   hogy remélem, most 
+jobban   érzi magát, de egyszer próbálja meg   ugyanezt akkor, amikor egy rakás   bűnöző cigány 
+"menekül" éppen   Kanadába. Ja, hogy azt nem mered?   Nem hát.</div><div style="text-align: justify; 
+"><br></div><div style="text-align: justify; ">Az   eseményekről   egyébként értesítettem dr. 
+Gaudi-Nagy Tamást is. A   Jobbikot biztosan meg fogja lepni,   hogy   nemzetközi terrorszervezetként 
+tartják számon őket. Nem   lennék meglepve, ha a   nemzetbiztonsági   bizottság következő ülésén 
+Zagyva Gyula kettécsapná az   asztalt.</div><div style="text-align:   center;"><img src="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/images/gallery/terrorpapir_1.jpg" class="img_center" alt="" title=""></div></div>    
+ <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/index.php?category=1&amp;startdate=2012-05-13&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+<div class="textbanner">
+<b>Vegyen korszerű seggvakarógépet!</b><br>
+Az Anus-Comfort Kft. termékei az Ön végbelét is elkényeztetik! Hívja most.<br>
+<a href="showpost.php%3Fid=156.html#" onclick="clickbanner(2);">Anus-Comfort!</a>
+</div>
+</div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(156, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 05, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120516015637id_/http://tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "http://piwik.sidripalliance.com/piwik/" : "http://piwik.sidripalliance.com/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.sidripalliance.com/piwik/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+</body>
+</html>

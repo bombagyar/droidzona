@@ -1,0 +1,379 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=159">Budapest-London: egy kis különbség</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-05-17</span><br><a href="showpost.php%3Fid=158.html">Dániel Péter mélytorkozik - frissítve!</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-05-16</span><br><a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=157">Megvédjük a Főméltóságú úr szobrát?</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-05-14</span><br><a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=156">Nemzetközi terrorista lettem</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-05-13</span><br><a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=153">Hegesztőtanfolyam</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-05-06</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br><a href="http://www.trueamericandog.com" target="_blank">True American Dog</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>Dániel Péter mélytorkozik - frissítve!</h1>
+<h2>2012. május 16., szerda</h2>
+
+<div style="text-align: justify;">Dehogyis foglalkozom én itt a napisajtó       
+eseményeivel. Nélkülem is mindenki tudja, hogy ez a Dániel Péter nevű társadalmi jelenség napok óta  
+     arra készül, hogy vörös festékkel rongálja meg Horthy Miklós most felállított szobrát 
+Kerekiben.     Nem   is ezzel kerül be a Droidzónába, hanem azzal, ahogy ügyvéd létére elgázoltatta 
+magát a       szopórollerrel.<br><br>Szerény véleményem szerint egyébként ez az alapvetően jó 
+szándékkal       készített, de rendkívül amatőr szobor igazán beáldozható lenne azért, hogy ezt a 
+pofát három évre       lecsukják. Amire készül, az ugyanis kulturális javak ellen elkövetett 
+rongálás, aminek ennyi a       büntetési tétele. Utána már ügyvédnek sem nagyon mondhatná magát, 
+mert a kamarai tagságot kizárja a       büntetett előélet.<br><br>Ennél azonban jobb ötletem támadt. 
+Mivel Dániel az elmúlt napokban       többször is "ultimátumot" fogalmazott meg Kereki község 
+önkormányzata felé, hogy távolítsák el a       szobrot, nagyszerű alapot adott arra, hogy megírjam 
+az alábbi feljelentést ellene, és még tegnap       este be is nyújtottam. A szép benne az, hogy ha 
+nem írnám meg, magam is bűncselekményt követnék el.     Ugyanis ha valaki terrorcselekmény 
+előkészületéről szerez tudomást, és nem jelenti be, az szintén     bűncselekménynek 
+számít.<br><br><span style="font-weight: bold;">FRISSÍTÉS:</span> Bátor   antifasisztánk az éj leple 
+alatt surrant le Somogyba, végrehajtotta a bűncselekményt, és reggel már   a Facebookon büszkült, 
+hogy milyen szellemesen sikerült kijátszania a rá leselkedő "neonácik"   seregét. Nos, nem baj! 
+Kulturális javak rongálása, ha a kár visszafordíthatatlan: 1 évtől 5 évig   terjedő 
+szabadságvesztés. Terrorcselekmény befejezett esete: 10-től 20 évig, illetve életfogytig. 5   év 
+feletti szabadságvesztéssel fenyegetett bűncselekmények esetén kizárt a felfüggesztett büntetés,   
+illetve automatikusan el kell rendelni az előzetes letartóztatást. Szóval lesz neki ideje elmélkedni 
+  a tettén. Az eljárás már többek feljelentése nyomán is megindult. El ne felejtsem, a feljelentők oldalán van egy AVH-s főtiszt is, aki némi nyomást is gyakorolhat az eljárásra, ha akar. Jó   
+szórakozást a Venyóban, zsidrák!<br><br><hr style="width: 100%; height: 2px;"><span style="font-weight:   bold;"><br>Budapesti   Rendőr-főkapitányság</span><br>1139 Budapest, Teve u.   
+4-6.<br><br>Tisztelt     Rendőrség!<br><br>Terrorcselekmény előkészítésének alapos gyanúja miatt   
+ezúton teszek<br><br><div style="text-align: center;"><span style="font-weight:   
+bold;">feljelentést</span><br></div><br>Dániel     Péter ügyvéd, közismert szélsőbaloldali aktivista 
+  ellen.<br><br>Nevezett személy 2012 május 13-án     Facebook-oldalán közzétette, hogy május 16-án, 
+  csütörtökön vörös festékkel meg fogja rongálni a     Kereki községben aznap felállított Horthy   
+Miklós-szobrot. Híveit és követőit arra szólította fel,     hogy kövessék őt ebben. A felszólítás   
+így hangzott:<br><h5>Egész alakos Horthy-szobrot avatnak most     vasárnap, a Somogy megyei   
+Kerekiben. Én pedig azt tervezem, hogy amint jobban leszek, meglátogatom     ezt a felháborító,   
+szégyenletes műalkotást és leöntöm vörös festékkel. Ezzel emlékezem majd meg     erről az ócska,   
+háborús bűnösről és milliónyi honfitársunk értelmetlenül kiontott véréről. Ráadásul     a szobor is  
+ sokkal kifejezőbb lesz így. Azután leülöm ezt is.</h5>Május 15-én ugyanezen személy     szintén a   
+Facebookon az alábbi közlést tette:<br><h5>A Kék szalaggal a demokráciánkért civil     mozgalom   
+tiltakozik a Horthy-szobor felállítása ellen, és felszólítja Kereki község önkormányzatát,     hogy  
+ a tömeggyilkos, háborús bűnös szégyenletes szobrát május 17. csütörtök délig távolítsa     
+el.</h5>A   felszólítást többször is megismételte, majd hozzátette:<br><h5>Ezt követően a szobrot    
+ szabad   prédának tekintjük.</h5>Később pedig, miután több személytől is támogató hozzászólásokat   
+  kapott,   meghirdette a következőt:<br><h5>Találkozó csütörtökön, de. 11.00 órakor a Nyugatinál, 
+az       Alexandra könyvesház előtti parkolóban. Az én autómban még egy hely van.</h5>A fentiekből   
+    nyilvánvaló, hogy Dániel Péter tudatosan készül egy bűncselekmény elkövetésére azzal a 
+szándékkal,       hogy Kereki önkormányzatát rákényszerítse arra, hogy a helyi lakosok által 
+felállított szobrot       eltávolítsák. Egyúttal nyilvánvalóan célja az is, hogy a tőle eltérő 
+politikai gondolkodású       embereket elrettentse hasonló szobrok felállításától.<br><br>A Büntető 
+Törvénykönyv 261. §-a       szerint:<br><br><h5>261. § Aki abból a célból, hogy<br><br>a) <span style="font-weight:       bold;">állami szervet,</span> más államot, nemzetközi szervezetet <span style="font-weight:       bold;">arra kényszerítsen, hogy valamit tegyen, ne tegyen vagy 
+eltűrjön,</span><br><br>b)<span style="font-weight: bold;"> a lakosságot 
+megfélemlítse,</span><br><br>a (9) bekezdésben       meghatározott személy elleni erőszakos, 
+közveszélyt okozó vagy fegyverrel kapcsolatos bűncselekményt       követ el, bűntett miatt tíz évtől 
+húsz évig terjedő, vagy életfogytig tartó szabadságvesztéssel       büntetendő.<br><br>(4) Aki az 
+(1) vagy a (2) bekezdésben meghatározott bűntett elkövetésére   felhív,     ajánlkozik, vállalkozik, 
+a közös elkövetésben megállapodik, vagy az elkövetés   elősegítése céljából     az ehhez szükséges 
+vagy ezt könnyítő feltételeket biztosítja, ahhoz anyagi   eszközöket szolgáltat     vagy gyűjt, 
+bűntettet követ el, és két évtől nyolc évig terjedő   szabadságvesztéssel     büntetendő.<br><br>(5) 
+Aki a (4) bekezdésben meghatározott cselekményeket az   (1) vagy a (2)     bekezdésben meghatározott 
+bűntettnek terrorista csoportban történő elkövetése   érdekében valósítja     meg, illetőleg a 
+terrorista csoport tevékenységét egyéb módon támogatja,   bűntettet követ el, és öt     évtől tíz 
+évig terjedő szabadságvesztéssel büntetendő.<br><br>(7) Aki   az (1) vagy a (2) bekezdésben     
+meghatározott bűncselekmény elkövetésével fenyeget, bűntettet   követ el, és két évtől nyolc évig    
+ terjedő szabadságvesztéssel büntetendő.<br><br>(8) Aki hitelt   érdemlő tudomást szerez arról, hogy 
+    terrorcselekmény elkövetése készül, és erről a hatóságnak,   mihelyt teheti, jelentést nem tesz, 
+    bűntettet követ el, és három évig terjedő   szabadságvesztéssel büntetendő.<br><br><span style="font-weight: bold;">(9) E §   alkalmazásában</span><br><br>a)<span style="font-weight: 
+bold;">     személy elleni erőszakos,   közveszélyt okozó vagy fegyverrel kapcsolatos bűncselekmény 
+</span>az     emberölés [166. § (1) és   (2) bek.], a testi sértés [170. § (1)-(5) bek.], a 
+foglalkozás körében     elkövetett szándékos   veszélyeztetés [171. § (3) bek.], a személyi 
+szabadság megsértése (175. §), az     emberrablás   (175/A. §), a közlekedés biztonsága elleni 
+bűncselekmény [184. § (1) és (2) bek.], a     vasúti,   légi vagy vízi közlekedés veszélyeztetése 
+[185. § (1) és (2) bek.], a hivatalos személy     elleni   erőszak (229. §), a közfeladatot ellátó 
+személy elleni erőszak (230. §), a hivatalos személy       támogatója elleni erőszak (231. §), a 
+nemzetközileg védett személy elleni erőszak (232. §), a       közveszélyokozás [259. § (1)-(3) 
+bek.], a közérdekű üzem működésének megzavarása [260. § (1)-(4)       bek.], a légi jármű, vasúti, 
+vízi, közúti tömegközlekedési vagy tömeges áruszállításra alkalmas       jármű hatalomba kerítése 
+(262. §), a robbanóanyaggal vagy robbantószerrel visszaélés (263. §), a       lőfegyverrel vagy 
+lőszerrel visszaélés [263/A. § (1)-(3) bek.], a haditechnikai termékkel és       szolgáltatással, 
+illetőleg kettős felhasználású termékkel visszaélés [263/B. § (1)-(3) bek.], a       radioaktív 
+anyaggal visszaélés [264. § (1)-(3) bek.], a nemzetközi szerződés által tiltott       fegyverrel 
+visszaélés [264/C. § (1)-(3) bek.], a számítástechnikai rendszer és adatok elleni       
+bűncselekmény (300/C. §), a rablás (321. §)<span style="font-weight: bold;"> és a rongálás (324.     
+  §),</span><div id="banner1" class="banner"><div class="textbanner">
+<b>Vegyen korszerű seggvakarógépet!</b><br>
+Az Anus-Comfort Kft. termékei az Ön végbelét is elkényeztetik! Hívja most.<br>
+<a href="showpost.php%3Fid=158.html#" onclick="clickbanner(2);">Anus-Comfort!</a>
+</div>
+</div>b) terrorista csoport: három vagy több személyből álló, hosszabb időre 
+szervezett,       összehangoltan működő csoport, amelynek célja az (1)-(2) bekezdésben meghatározott 
+  bűncselekmények     elkövetése.</h5>A fenti törvény értelmében Dániel Péter akciója egyértelműen   
+terrorcselekménynek     minősül, hiszen a (9) bekezdésben felsorolt (kulturális javak ellen   
+elkövetett) rongálás bűntette     útján kívánja megfélemlíteni és döntése visszavonására   
+kényszeríteni Kereki önkormányzatát, ami     egyértelműen állami szerv. Tettét egyértelműen   
+csoportosan kívánja elkövetni.<br><br>A kulturális     javak ellen elkövetett rongálás a Btk. 324. § 
+  (3) b. szerint egyébként akkor is három évig terjedő     szabadságvesztéssel büntetendő bűntett, 
+még   ha nem is párosul hozzá a terrorcselekményt megvalósító     fenyegetés.<br><br>Dániel Péter 
+tettét   nem menti az a körülmény, hogy akcióját nagy nyilvánosság     előtt, a Facebookon szervezi, 
+hiszen   ezzel nem az a célja, hogy a rendőrség tudomására hozza azt,     hanem éppen hogy további   
+támogatókat nyerjen meg ügyének. Ezzel pedig éppen ellentétes hatást ér el:     csoportos   
+elkövetésre bujtogat, tettestársakat toboroz.<br><br>Álláspontom szerint indokolt lenne     Dániel   
+Péter mielőbbi elfogása és őrizetbe vétele, mivel korábbi esetek nyomán nyilvánvaló, hogy       
+tudatosan készül minél több ilyen és ehhez hasonló akció elkövetésére politikai okokból, amit ő -    
+   helytelenül - a véleményszabadsága gyakorlásának tekint. Szabadlábon hagyása esetén biztosan meg  
+     fogja kísérelni a bűncselekmény későbbi végrehajtását, vagy valamelyik társára bízza       
+azt.<br><br>Csatolom a bűncselekmény előkészületét bizonyító Facebook-bejegyzések       
+másolatát.<br><br>Budapest, 2012. május 15.<br><br><br><div style="text-align: right;">Polgár       
+Tamás<br></div><br></div>     <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=2&amp;startdate=2012-05-16&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+<div class="textbanner">
+<b>Vegyen korszerű seggvakarógépet!</b><br>
+Az Anus-Comfort Kft. termékei az Ön végbelét is elkényeztetik! Hívja most.<br>
+<a href="showpost.php%3Fid=158.html#" onclick="clickbanner(2);">Anus-Comfort!</a>
+</div>
+</div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(158, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 05, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120518232519id_/http://www.tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "http://piwik.sidripalliance.com/piwik/" : "http://piwik.sidripalliance.com/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.sidripalliance.com/piwik/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+</body>
+</html>

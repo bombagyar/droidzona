@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=136">Köszönjük, Afrika!</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-03-31</span><br><a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=135">Megint a BRFK...</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-03-30</span><br><a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=134">Pali bácsi benne lesz a tévében</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-03-30</span><br><a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=133">Károlyi költözik</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-03-26</span><br><a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=132">Haha</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-03-25</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br><a href="http://www.trueamericandog.com" target="_blank">True American Dog</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>A hülye zsidó meg az idegbeteg kutyái</h1>
+<h2>2012. március 22., csütörtök</h2>
+
+<div style="text-align: justify;">Történetünk negatív hősét nem azért zsidózom 
+le, mert antipatikus. Valóban egy szembetűnő faji jellemvonásokat hordozó, azaz kampós orrú, 
+bodrihajú, szódatalp-szemüveges pasas. Épp az imént hívtam rá rendőrt.<br><br>Sétálni vittem 
+Pixelt a közeli parkba, a kutyafuttatóra. Mindig oda járunk, sok barátja van ott, mindig jókat 
+játszik velük. Most is azt hitte, hogy ismerősöket lát a távolban, amikor nagy boldogan beszaladt a 
+futtatóra. Telefonomba mélyedve sétáltam utána - éppen egy GPS alkalmazást teszteltünk egy 
+kollégával - amikor hirtelen óriási morgás, acsargás, csaholás tört fel a sötétből, és ezzel egy 
+időben Pixel visítása. Az előfordul, hogy a kutyák amolyan kamumorgással fogadják egymást, de ez nem 
+az volt. Ennek a hörgésnek az a jelentése, hogy <span style="font-style: italic;">a kurva anyádat 
+kieszem a szívedet te rohadék!! </span><br><br>Odarohantam, és három kutyát láttam veszettül 
+forgolódni a porban. Az egyik Pixel volt: felváltva visított, harapott, és próbált menekülni. A 
+másik egy vizsla, a harmadik valami szürkés dolog volt, szintén vizslaméretű, és mindkettő vérben 
+forgó szemekkel támadta Pixelt. Gazda sehol, rohantam oda, hogy szétválasszam őket, de azok abban a 
+pillanatban szétspricceltek, és máris húsz méterrel arrébb támadtak pánikban menekülő 
+kutyámra.<br><br>- Kié ez a két dög?! - ordítottam bele a sötétbe, mire előbukkant egy pocakos 
+sziluett, a fején valami leírhatatlan hajviselettel, és valami parancsféléket motyogva kocogni 
+kezdett a két dög felé. De azokat legfeljebb a golyó érhette volna utol, már a futtató másik végében 
+voltak, próbálták Pixelt sarokba szorítani és széttépni. Teljesen megvadultak. Én is. Rohantam 
+utánuk, és egy óvatlan pillanatban sikerült is a vizslába belerúgni. Ekkor azonban valaki hátulról 
+megpróbált lefogni.<br><br>- Ne rugdosd a kutyámat, a kurva anyád! - hörögte a pasas, és megpróbált 
+fellökni.<br>- A te kurva anyád! - ordítottam vissza, és ököllel felé csaptam, de nem 
+értem el. A másik szerencséje, hogy nem értem rá vele foglalkozni, mert 
+Pixel életveszélyben volt. Ha nem lett volna, nyomorékra verem, így csak ellöktem. Rohantunk a kutyák felé, én hogy 
+lerugdossam, ő hogy befogja őket, de azok szartak parancsra, ordításra, folyton szétfutottak. Közben 
+még nekem ordibált a baromja, hogy ne merjek a kutyáihoz nyúlni, mit képzelek. Én meg hogy 
+eltöröm kezét-lábát, ha nem fogja meg a kurva dögjeit. Végül valahogy sikerült megfognia őket. Pixel 
+reszketve hevert az avarban, összevissza tépték, csupa nyál meg sár volt.<br><br>- Te mi a kurva 
+anyádat képzelsz, hogy idejössz két ilyen idegbeteg döggel és elereszted őket?! - érdeklődtem torkom 
+szakadtából.<br><br>A pasas, mint említettem, egy zsidó volt. Ötvenöt év körül lehetett, haja mintha 
+most érte volna áramütés, szódatalpak a szemein, a fülében egy iPod fülhallgatója.<br><br>- Ezek nem 
+dögök! - tiltakozott. - És te hogy képzeled, hogy csak úgy elengeded a kutyádat? Miért nem nézel 
+körül előbb?!<br>- Mi van? Ez a kutyafuttató, te faszfej! Itt szokás elengedni a kutyákat! De nem az 
+ilyen közveszélyes, kettyós szarokat!<br>- Én mindig figyelek, hogy jön-e valaki, és azonnal 
+visszahívom őket - hazudta szemrebbenés nélkül.<br>- Na, akkor most beszélgessünk arról, kit akartál 
+te lefogni. Szépen kikötöd ezeket a dögöket, és lejátsszuk.<br>- Mit?<br>- Mit, mit, azt hiszed, 
+csak úgy tapogathatsz, te buzi?! Olyat rád verek, hogy anyád letagad!<br>- Én ezt nem csinálom! - 
+közölte flegmán, és elindult kifelé.<br>- Jó, akkor itt maradsz, és rendőrt hívok.<br>- Én azt nem 
+várom meg.<br>- De megvárod, mert bűncselekményt követtél el, én pedig visszatarthatlak, amíg 
+kiér a járőr. És ha közben megsérülsz, nem fogom sajnálni.<br><br>A zsidó megpróbált kislisszolni a 
+futtatóról és rám csapni a kaput, de visszacsaptam, és közöltem vele, hogy ha még egy lépést tesz, 
+elkezdem kurvára bebántani. Erre megállt, és magyarázkodni kezdett.<br><br>- Én... én elnézést kérek 
+azért, amit a kutyáim csináltak... - próbálkozott.<br>- Kuss! - mondtam, miközben a rendőrség számát 
+tárcsáztam.<br>- Ezek a kutyák nem veszélyesek...<br>- Befogod!<br>- Én úgy gondolom, hogy a 
+korrektség azt diktálja, hogy meghallgass...<br><br>Lecsaptam a telefont. A rendőrség úgysem veszi 
+fel egyhamar.<br><br>- Na ide figyelj, te askenázi gyökér! Azt hiszed, hogy egy kis budai úri 
+buzival állsz szemben? Elbasztad, én tévedésből lakom ezen a környéken! És ha tovább jártatod a 
+pofádat, eldurran az agyam annyira, hogy megfeledkezzek a felfüggesztett büntetésemről, amit 
+pontosan azért kaptam, mert szétszedtem egy ilyen nagypofájú geci arcát, és az neked azért lesz 
+szar, mert nem fogok megállni a súlyos testi sértés minősített esetéig. 
+Megértetted?!<br><br>Megértette. A továbbiakban bárgyú arccal vigyázzban állt, fogta a kutyái 
+pórázát, és várta sorsa beteljesedését. A kutyái idegesen nyüszítettek. Ha a távolban másik kutyát 
+láttak, morogni és ugatni kezdtek.<br><br>- Ez, bazmeg! Ilyen beteg kutyákat! Meglát egy másikat, és 
+már ugatja! És még behívni sem tudod. Karanténba kéne dugni ezeket. Veled együtt, te faszszopó. Anyád nem szégyell?!<br><br>Jó negyedórába telt, mire a 
+rendőrök odataláltak, mert fogalmuk sem volt, hol van a Hegyalja úton park, még vissza is hívtak, hogy segítsek. Pedig az egész 
+kerületben alig kétszáz méter a Hegyalja út, és egyetlen park van ott. Végül begurult egy szürke 
+Citroen a sétányra, és kiszállt négy sün.<br><br>- Jó estét - mondtam. - Veszélyes kutyával 
+kapcsolatos szabálysértés történt.<br>- Azt majd nem maga fogja megállapítani! - ugatta vissza a 
+főtörzs.<br>- Azt meg nem maga, hogy mit akarok bejelenteni.<br><br>A járőrparancsnok értelmesebb 
+volt, leintette fontoskodó kollégáját (valószínűleg előírás, hogy minden rendőrjárőrben legyen egy 
+ilyen), és kikérdezett, hogy mi történt. Elmondtam, hogy ez a barom ilyen kutyákat 
+sétáltat.<br><br>- Hol a szájkosár? - kérdezték a rendőrök a pasastól. Az a vállát vonogatta.<br>- 
+És az övé hol van? - kérdezte a fontoskodó rendőr Pixelre mutogatva.<br>- Nyerget ne tegyek rá? - kérdeztem 
+vissza. (Ami amúgy egy volt barátnőm dumája, akinek hasonló méretű kutyája volt, és ugyanerre a 
+hülye kérdésre szokta volt adni válaszként.)<br>- Közterületen kutyát csak pórázon és szájkosárral 
+szabad sétáltatni!<br>- Igen, a nagy testű és a veszélyes kutyákat.<br>- Minden kutyát! Csak pórázon 
+és szájkosárral! Ezért magát is feljelentjük!<br>- Aha. Hát, volt rajta nyakörv, csak leszakadt róla 
+a verekedésben. Ehhez mit szól?<br>- És a póráz?<br>- Kiesett a zsebemből a rohangászásban, valahol 
+ott van a sötétben. Sajnálom.<br>- Miért nem volt a póráz a kutyán?!<br>- Mert a futtatón voltunk.<br><br>Ezzel 
+megbeszéltük a részemről szerinte elkövetett szabálysértést, bár a szájkosárhoz továbbra is 
+ragaszkodott, hogy anélkül nem szabad. Lehet, hogy most tényleg feljelent a baromarcú, de megnéztem a kerületi rendeletet, és bár valóban a faszságig szigorú - Pokorni Zoltán 
+kerületében a kutyákat még az udvaron sem szabad elengedni a pórázról - a szájkosár viselésére 
+kötelezett kutyafajtákat tételesen felsorolja, és Pixel egyikre sem hasonlít. Ilyenek vannak a 
+listán, hogy dán dog, német juhász, dobermann, staffordshire terrier, szóval amelyek fizikailag valóban képesek megharapni valakit. Az más kérdés, hogy még egyetlen kutyát sem láttam a XII. 
+kerületben szigorúan pórázon és szájkosárral sétálni, ahogyan más kerületekben sem.<br><br>A 
+rendőrök végül felvették a zsidó adatait, és közölték, hogy szabálysértési eljárást indítanak 
+ellene. Nekem elkezdtek okoskodni, hogy tanulmányozzam a kulturált kutyasétáltatás szabályait. 
+Mondtam neki, hogy húsz éve képzek kutyákat, több generáció nőtt fel a kezem alatt, szóval inkább 
+ezt a barmot iskolázza a két elmebeteg korcsával. Azok éppen akkor kezdtek hörögni megint egy 
+közelben elhaladó kiskutyára.<div id="banner1" class="banner"><div class="textbanner">
+<b>Vegyen korszerű seggvakarógépet!</b><br>
+Az Anus-Comfort Kft. termékei az Ön végbelét is elkényeztetik! Hívja most.<br>
+<a href="showpost.php%3Fid=129.html#" onclick="clickbanner(2);">Anus-Comfort!</a>
+</div>
+</div>- Látják, ilyen idegbetegek - mutattam a rendőröknek, akik 
+kénytelen-kelletlen elismerték, hogy valóban. Pixelt közben ölbe kellett vennem, úgy remegett. Holnap le is kell vinnem az orvoshoz, hogy 
+átnézze, nem sérült-e meg. Bár nem vérzik sehol, rettenetesen megtépték, és számos testrészét 
+fájdalmasan összerándítja, ha megérintem.<br><br>- Holnaptól késsel a zsebemben fogok ide lejárni - búcsúztam a 
+zsidótól - és ha még egyszer meglátom, hogy a dögjeiden nincs póráz, kérdés nélkül beléjük fogom 
+vágni. És jogszerűen - tettem hozzá, mielőtt a rendőr okoskodásra nyitotta volna a száját.<br>- Hát, 
+hát igen, de... közbiztonságra veszélyes eszköz... - próbálkozott a főtörzs.<br>- Nyolc centi!<br>- De akkor is...<br>- Nem, akkor nem.<br><br>Pixel most csendesen fekszik a kosarában, és próbálja kipihenni a 
+megrázkódtatást. Nem merem megfürdetni szegényt, mert az legalább ekkora trauma szokott neki lenni. 
+Majd holnap.<br></div>  <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=2&amp;startdate=2012-03-22&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+<div class="textbanner">
+<b>Vegyen korszerű seggvakarógépet!</b><br>
+Az Anus-Comfort Kft. termékei az Ön végbelét is elkényeztetik! Hívja most.<br>
+<a href="showpost.php%3Fid=129.html#" onclick="clickbanner(2);">Anus-Comfort!</a>
+</div>
+</div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(129, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 03, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120331212318id_/http://www.tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "http://piwik.sidripalliance.com/piwik/" : "http://piwik.sidripalliance.com/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.sidripalliance.com/piwik/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+</body>
+</html>

@@ -1,0 +1,319 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="showpost.php%3Fid=226.html">Magyarország, mert megérdemlem</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-08-24</span><br><a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=224">Nyár</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-22</span><br><a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=223">Helyreigazítás</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-14</span><br><a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=220">A Csatáry-ügy rövidre zárása</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-07</span><br><a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=219">A szép új világ megint szebb lett</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-07</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://officespace.blog.hu" target="_blank">Irodai Patkány</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>Magyarország, mert megérdemlem</h1>
+<h2>2012. augusztus 24., péntek</h2>
+
+<div align="justify">Egy Tajvanból 24 óra alatt beérkezett csomag kézbesítése 
+ideje Ferihegytől a lakásomig: több, mint egy hét. Azért nem tudom pontosan, mert még mindig nincs 
+itt.<br><br>A nemzetközi követés szerint 21-én kijött a vámhivatalból, az ügyfélelhárító 
+szolgálat szerint nem is kellett vámolni, és nyugodjak meg, rendszerint "öt-hat napon belül" 
+kézbesítik, ha az illetékes postahivatal már megkapta. Ennyi idő alatt persze csigafogattal is 
+ideérne Bangladesből, de az mellékes. Azt nem tudják, hogy a postahivatal miért nem kapta meg. Azt 
+sem, hogy hol van. A vámról kijött, az biztos. Nem, nem lehet érte bemenni sehová. A csomagelosztó 
+helye államtitok. Az ügyfél érjen rá várni. Örüljön, hogy kiszolgálják. Vagy annak is, ha nem. 
+Hiszen meg is verhetnének, tudják a címem.<br><br>Ha egy vasutas azt mondja, hogy a vonat meg fog 
+állni Kőbánya alsón, az azt jelenti, hogy nem áll meg Monorig. Kellemes utazást, köcsög 
+utasok.<br><br>A T-Comnak minimum 30 napjába kerül előkotorni egy titkosított telefonszámhoz tartozó 
+nevet. Ez a határidő a rendőrségnek szól, mert földi halandónak természetesen kuss a neve. Állítólag 
+a Vodafone gyorsabb, azoknak csak két hét kell hozzá.<br><br>A rendőrségen megtudtam, miért csak 
+zsarolással gyanúsítják meg a fegyveres rablást elkövető cigányokat. Azért, mert van egy belső 
+főkapitányi rendelet, amely szerint abban a húsz körzetben, ahol a lakosságszámhoz képest a legtöbb 
+rablást követik el, a helyi kapitány repül. Így aztán papíron sehol sincs rablás, csak zsarolás. A 
+kiskapu pedig az, hogy a a törvény szövege szerint a rablásnál az elkövető erőszakkal veszi el a sértett 
+értékeit, zsarolás esetén viszont a sértett önként adja át. Vagyis ha legközelebb kést nyomnak a 
+torkodhoz a telefonodért, és szeretnéd, ha az elkövető nem csak ejnyebejnyét kapna, ne add oda, amíg 
+le nem szúrtak. De ha aggódsz a kerületi rendőrkapitány állásáért, légy 
+együttműködő.<br><br>Megtudtam azt is, hogy igenis lehetséges, hogy egy rendőr közokirat-hamisítást 
+kövessen el. Eddig akárhányszor láttam ilyesmit, sosem az volt. Például amikor 2007-ben 
+meghamisították a bűnügyi nyilvántartást, vagy amikor 2011-ben megint, hogy előzetesbe rakhassanak. 
+Az ügyészség szerint egyik sem az volt, csak "tévedés". A közokirat-hamisításnak ugyanis kétféle 
+formája van: ha civil követi el, illetve ha hivatalos személy. Ha civil, akkor megkülönböztetnek 
+gondatlanságból elkövetett hamisítást (vagyis ha elírod a címedet a vámpapíron, mész a böribe), 
+illetve szándékosat. Hivatalos személy esetében azonban csak szándékos létezik, a Btk. szerint a 
+közszolga gondatlanságból nem követhet el hamisítást. Mondhatnánk, ez rendben is van, hiszen akinek 
+az a dolga, hogy közokiratokat szerkesszen, az figyeljen csak oda a munkájára. De az ügyészség nem 
+így értelmezi, hanem úgy, hogy ha az okiratot hamisító hivatalos személy tévedésre hivatkozik, akkor 
+az más, akkor nem is történt semmi, hiszen gondatlanságból nem követhet el ilyen bűncselekményt, 
+csak szándékosan. Ezért hamisíthatnak szabadon orrba-szájba a rendőrök, ami jólesik, hiszen 
+"egyszerű elírás", hogy valakinek több oldalra rúgó bűnlajstromot hazudoznak össze, az ügyészség 
+pedig erre megértően bólogat.<br><br>De mint mondtam, mégiscsak lehetséges, hogy ilyen 
+bűncselekményt ráverjenek egy rendőrre. Történt egy X. kerületi zsaruval, hogy be kellett mennie a 
+Venyige utcai börtönbe, kihallgatni egy gyanúsítottat, akit durván 138 rendbeli ilyen-olyan 
+bűncselekménnyel gyanúsítottak. Megvolt a bonyolult, egész napos procedúra, visszatért a rendőr a 
+kapitányságra a kötegnyi irattal, ám ekkor vette észre, hogy elírás történt: nem 138, hanem 139 
+rendbeli a bűncselekmény. Fogta hát a javítófestéket, átkente és kijavította. Hoppá, de meglátta ám 
+az ügyész! Lett is ramazuri! A rendőr ellen azonnal vádat emeltek ellene közokirat-hamisításért, el 
+is ítélték, és bár nem kapott letöltendő büntetést - még szerencse! - az egyenruhától azonnali 
+hatállyal elbúcsúzhatott, a vele járó juttatásokkal együtt.<br><br>Mert kérem, rendnek kell lenni. 
+Ha már nem lehet mindenhol rend, legalább legyen ott, ahol nem kell.<br><br></div>  <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=2&amp;startdate=2012-08-24&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+<div class="textbanner">
+<b>Vegyen korszerű seggvakarógépet!</b><br>
+Az Anus-Comfort Kft. termékei az Ön végbelét is elkényeztetik! Hívja most.<br>
+<a href="showpost.php%3Fid=226.html#" onclick="clickbanner(2);">Anus-Comfort!</a>
+</div>
+</div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(226, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 08, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120825235352id_/http://www.tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "http://piwik.sidripalliance.com/piwik/" : "http://piwik.sidripalliance.com/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.sidripalliance.com/piwik/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+</body>
+</html>

@@ -1,0 +1,314 @@
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="showpost.php%3Fid=52.html">Így lett emléktáblája Wesselényi Miklósnak</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-01-19</span><br><a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=51">Megint felmentettek</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-01-19</span><br><a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=50">Néni a liftben</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-01-19</span><br><a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=49">Kockáknak kötelező</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-01-18</span><br><a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=48">Metródroid</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-01-18</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br><a href="http://www.trueamericandog.com" target="_blank">True American Dog</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>Így lett emléktáblája Wesselényi Miklósnak</h1>
+<h2>2012. január 19., csütörtök</h2>
+
+<div style="text-align: justify;">Ért már korábban is az a megtiszteltetés, 
+hogy     egy emléktáblát felavathassak. A sors - és két droid - úgy hozta, hogy megint közöm lesz 
+egyhez.     Igaz, csak egészen kicsi.<br><br>December 9-én éppen kedvenc éttermembe, a 
+Govindába     tartottam, amikor a Vigyázó Ferenc utca sarkán arra lettem figyelmes, hogy egy idős 
+hölgy az egyik     épület falára egy műanyag iratvédőbe bújtatott papírlapot szögel fel. A lap egy 
+hevenyészett     "emléktábla" volt, s annak volt hivatott emléket állítani, hogy 1850-ben itt halt 
+meg báró     Wesselényi Miklós, helyesebben az akkor itt álló fogadó egyik szobájában. Ezt a szerény 
+memoriált     egyébként évek óta lehetett látni ezen a falon, minden bizonnyal a néni rakta ki, és 
+időnként     kicseréli, ha már túlságosan viharvert.<br><br>Ebéd után hazafelé indulva ismét arra 
+vezetett az     utam. A nénit éppen egy közterület-felügyelő és egy civil ruhás pasas fogták közre. 
+Egyikük egy kis     koszorút tartott a kezében, amit a hölgytől vettek el, s aki most hevesen 
+tiltakozott ez ellen.     Mivel éppen nálam volt a kamera, bekapcsoltam, és azzal mentem oda 
+érdeklődni, hogy mi történik     itt?<br><br>Közben, mintegy varázsütésre, megjelent Pál Marci 
+biciklin. Van egy ilyen     szuperképessége, hogy megérzi, ha balhé van.<br><br>A néni, aki 
+egyébként egy nyugalmazott tanárnő     volt Isaszegről, elmondta, hogy évek óta próbálja elérni, 
+hogy valaki végre emléktáblát helyezzen     itt el Wesselényinek, de hiába, a közhivatalok válaszra 
+sem méltatják. Jobb híján ezért rakta ki a     papírlapot. A két pasas ezzel szemben azt hajtogatta, 
+hogy szabálysértési feljelentést fognak ellene     tenni engedély nélküli hirdetmény elhelyezéséért, 
+majd rázendítettek a minden droid által ismert     slágerre, amelynek az a refrénje, 
+hogy:<br><br><div style="text-align: center; font-style:     italic;">Kapcsolja ki a kamerát,<br>Nem 
+járulok hozzá<br>Van engedélye?<br></div><br>És más szövege     nincs is. Felvilágosítottam őket, 
+hogy nekem hiába vezényelnek, és filmeztem tovább. A civil ruhás     leszedte a falról a papírt, és 
+közben nem válaszolt arra a kérdésemre, hogy miért, kinek az     utasítására teszi ezt. A papírt a 
+koszorúval együtt bevitték az épületbe, ami egyébként Budapest     Főváros Közterület-felügyeletének 
+irodaháza, és hárman maradtunk a nyugdíjas tanítónénivel és Pál     Marcival.<br><br>Úgy gondoltam, 
+erről érdemes lenne egy riportfilmet csinálni. Tényleg, miért nincs     emléktábla Wesselényi 
+halálának helyszínén? És ki az, aki akadályozza? Telefonszámot cseréltünk a     nénivel, megígértem, 
+hogy megpróbálok segíteni. Megbeszéltük, hogy később felkeresem Isaszegen,     készítek vele egy 
+interjút, ő pedig majd megmutatja a tábla ügyében folytatott terjedelmes, ám     eredménytelen 
+levelezését. Hirtelen azonban felpattant az épület kapuja, és kizúdult rajta az előbbi     két 
+droid. Rutinosan bekapcsoltam a kamerát, mert láttam, hogy kötözködni jönnek, és igazam volt.   De   
+ezt inkább nézzétek meg.<br><br><div style="text-align:     
+center;"><iframe width="420" height="315" src="http://www.youtube.com/embed/rX8xDeuNYAA" frameborder="0" allowfullscreen></iframe><br></div><br>Tehát tetszik érteni: a droid azért igazoltat, hogy    
+ fel tudjon jelenteni később, amiért lefilmeztem, amint igazoltat. Mint látható, nem igazán     
+rezzentett meg a fenyegetése, hiszen szegénykémnek fogalma sem volt a jogairól, csak fontoskodott.   
+  Például nem tudta, hogy ő, mint hatósági személy, közszereplő. Idézve az Alkotmánybíróság 
+vonatkozó     határozatát:<br><h6>i) Alkotmánybíróságnál, bíróságnál, ügyészségnél, államigazgatási 
+szervnél,     <span style="font-weight: bold;">önkormányzati igazgatási szervnél, </span>az Állami   
+  Számvevőszéknél, a Köztársaság Elnökének Hivatalánál, az Országgyűlés Hivatalánál szolgálatot     
+teljesítő személy, akinek a tevékenysége a szerv rendeltetésszerű működéséhez tartozik;<br><br>j)    
+ jogszabály alapján közhatalmi, államigazgatási feladatokkal megbízott szervnél, testületnél az a    
+ személy, aki közhatalmi, államigazgatási feladatot lát el,".</h6>Akire a fenti leírás ráillik, 
+annak     bizony tűrnie kell, ha hivatalos működését kép- és hangfelvétellel dokumentálják. Annál is 
+inkább,     mert egy másik AB-határozat értelmében a hatósági eljárások dokumentálhatóságához 
+különös közérdek     fűződik. Azzal, hogy eltakarta a jelvényét, és nem volt hajlandó megmondani a 
+nevét, konkrét     törvénysértést is elkövetett, ugyanis a közérdekű adatok nyilvánosságáról szóló 
+törvény     szerint:<br><h6>az állami vagy helyi önkormányzati feladatot, valamint jogszabályban 
+meghatározott     egyéb közfeladatot ellátó szervek hatáskörében eljáró személyek neve és beosztása 
+- ha a törvény     másképpen nem rendelkezik - bárki számára hozzáférhető, nyilvános 
+adat.</h6>Droidunk mindezt nem     tudta, de mostanra megtanulta. Még aznap panaszlevelet írtam 
+ugyanis a közterület-felügyeletnek,     mellékelve a fenti videófelvételt. A mai napon Borbély 
+László szervezési igazgatóhelyettes úrtól a     következő választ kaptam. <br><img src="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/kozterulet_level1.jpg" class="img_center" alt="" title=""><img src="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/kozterulet_level2.jpg" class="img_center" alt="" title="">Az utolsó 
+mondatokból kiderül, hogy akaratán kívül végül a   két droid jót cselekedett.   Remélem, Borbély úr 
+beváltja ígéretét, és Wesselényi Miklós emléktáblája   rövidesen felkerül a   Vigyázó Ferenc utca és 
+az Akadémia utca sarkán álló épület falára. Ha egy szép   napon arra jártok,   és látjátok a táblát, 
+most már tudni fogjátok, mi a története.<br><br>   </div>   <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=2&amp;startdate=2012-01-19&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+<a style="cursor: pointer;" onclick="clickbanner(1);"><img src="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_1.jpg" alt="Hirdetés"></a></div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(52, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 01, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120121041512id_/http://www.tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+</body>
+</html>

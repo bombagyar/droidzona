@@ -1,0 +1,348 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=162">Traktorkerék vs. fémtolvaj cigány: 1:0</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-05-20</span><br><a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=161">SSD-re váltottam</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-05-19</span><br><a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=160">Facebook-részvény?</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-05-19</span><br><a href="showpost.php%3Fid=159.html">Budapest-London: egy kis különbség</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-05-17</span><br><a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=158">Dániel Péter mélytorkozik - frissítve!</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-05-16</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br><a href="http://www.trueamericandog.com" target="_blank">True American Dog</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>Budapest-London: egy kis különbség</h1>
+<h2>2012. május 17., csütörtök</h2>
+
+<div style="text-align: justify;">Szanaszét van rohadva a BKV - állapította meg 
+  egy bizottság a nyilvánvalót a napokban. Életveszélyes a 3-as metró, a budapesti légszennyezés   
+túlnyomó részét a szétrohadt buszok okozzák, a villamosok meg örülnek, ha nem ugranak le a   
+helyenként már rommá kopott sínekről. A személyzetről nem is szólva.<br><br>A személyzet   
+persze nem romos, hanem túlnyomórészt tahó. Tisztelet a kivételnek persze, mert időnként magam is   
+találkozom udvarias sofőrrel, aki nem vágja rá az ajtót a buszhoz rohanó utasra, sőt, kinyitja neki  
+ az ajtót még akkor is, ha már kiállt a megállóból, de a piros lámpa úgyis megállította. Ennek   
+ellenére nem lehet elmenni a tény mellett, hogy szinte naponta olvashatjuk a hírekben, hogy BKV-sok  
+ megverték, megalázták, megharapták ilyen vagy olyan okból az utasokat. Persze sohasem olyanokat,   
+akik esetleg úgy a füle közé lépne az emberkedő ellenőrnek, hogy többet se tudna előrenézni, hanem   
+lehetőleg nőket, tizenéveseket, esetleg ittas embereket, akik amúgy a légynek sem ártanának, csak   
+szeretnének hazajutni egy szombat esti buli után. Az eddigi csúcstartó az az ellenőrbrigád volt,   
+akik nemes egyszerűséggel az <a href="http://bkvfigyelo.postr.hu/az-ellenorok-elol-menekulve-erte-a-halal/">autók alá lökték</a> a nekik nem tetsző utast, majd azt hazudták, hogy az   
+menekülni próbált előlük. Kéne már valamit kezdeni ezekkel a karszalagosokkal, akik valamiért azt   
+képzelik, hogy élet-halál urai a járműveken.<br><br>A múlt hétvégén életemben először jártam   
+Londonban. Hadd osszam meg veletek, mi a különbség az ottani és az itteni tömegközlekedés között.   
+Tudom, hogy kissé elmaradott vagyok, hogy csak 36 évesen jutottam el először ebbe a szép városba, de 
+  hát ami késik... (az a BKV.)<br><br>Londonba érkezve az első megdöbbenésem az volt, hogy mennyire  
+ tiszta. Nemcsak hogy nincs szemét az utcán, hanem falfirkákat is alig látni. Persze vannak, de nem  
+ jellemző. S a levegő hihetetlenül tiszta. Mintha nem is egy hatmilliós város középpontjában 
+lennénk.   Nálunk talán a Margitszigeten vagy a budai hegyekben lehet ilyen. Hogy mitől? Nos, attól, 
+hogy a   Cityből cakkpakk ki vannak tiltva az autók. Míg nálunk hisztériáznak az autót 
+státusszimbólumnak és   a felnőtt élet elengedhetetlen kellékének tartó konzumidióták a dugódíj meg 
+a parkolás miatt, ott   egy szó sincs erről. Van helyette metró, doubledecker és kerékpár. Egyik sem 
+derogál a helyieknek,   nem érzik magukat prolinak attól, hogy buszra kell szálniuk. Persze a 
+doubledecker sem úgy néz ki,   mint nálunk a hetes busz, és a metró sem egy koszlott gödör, aminek 
+potyog a mennyezete.<br><br>A   BKV az utóbbi években azt találta ki, hogy felesleges az utasokat 
+bármiről is tájékoztatni, mindenki   ismeri a saját buszát, ha meg nem, akkor ott dögöljön meg a 
+megállóban. Biztosan nem csak nekem tűnt   fel, hogy újabban nem írják rá a járatszámot a 
+járművekre, legfeljebb elöl, a szélvédő fölött,   hacsak be nem szarik a "fok-gyem", mert akkor oda 
+is csak véletlenszerűen elszórt pixelek kerülnek.   Ugye, ismerős az érzés, amikor a Ferenciek terén 
+az aluljáróból felérve jó lenne tudni, milyen busz   állt be éppen a megállóba, kell-e rohanni vagy 
+nem, de hát nem lehet tudni, mert hátul nincs tábla,   sőt, oldalt sem.<br><br>Londonban ilyesmiről 
+szó sem lehet. Az utastájékoztatás mindenhol a lehető   legérthetőbb és legergonomikusabb módon van 
+megszervezve. Egyértelmű táblák, térképek és felhívások   igazítják útba az embert még az olyan 
+labirintus bonyolultságú állomásokon is, mint a Charing Cross   vagy a Liverpool Street. Minden 
+elágazásnál áll egy-egy kifogástalan egyenruhát viselő   metróalkalmazott, akinek csakis az a 
+feladata, hogy az utasok ügyes-bajos dolgaira odafigyeljen. Míg a   pesti metróban az embernek olyan 
+érzése támad, hogy a pénzéért nagy kegyesen beengedték egy üzemi   területre, aztán boldoguljon, 
+ahogy tud, addig Londonban valóban szolgáltatást nyújtanak, törődnek   vele, és megköszönik, hogy 
+őket választotta. Az udvariasság odáig terjed, hogy amikor az <span style="font-style: 
+italic;">attendant</span> látta, hogy a belépőkapu előtt a zsebemben kotorászva   keresem a 
+jegyemet, előzékenyen kinyitotta nekem, mondván, hogy hagyjam, látja, hogy van. Hol van ez   a 
+mentalitás a kültelki buszjáratra éjjel kettőkor csordában felkapaszkodó budapesti ellenőrökétől,   
+akiknek egyetlen célja, hogy szarrá bírságoljanak mindenkit, aki a budai erdőben vagy a csepeli   
+pusztulatban nem tudott nagyhirtelen jegyet vásárolni! S ez az udvariasság nemcsak egyszer fordult 
+elő egyetlen nap alatt, hanem   összesen háromszor.<br><br>A várakozási idő szinte nemlétező 
+fogalom. Nemcsak a metrószerelvények, a   buszok is szinte egymásba érnek. A Cityből Elthambe alig 
+fél óra alatt jutottunk ki, majd onnan   vissza is, és ebből talán ha két perc volt az összes 
+várakozás, pedig háromszor is átszálltunk. De aki   nem akar metrózni, nyugodtan bringázhat is, 
+hiszen egyrészt kitűnő kerékpárút-hálózat áll   rendelkezésére, másrészt nincsenek baromállat 
+autósok, akik ledudálják, letolják a biciklistát.   Alapvetően ugyanis autósok sincsenek, leszámítva 
+a tradicionális londoni taxikat és pár   rendőrautót.<br><br>A közlekedés nemcsak a tömegközlekedés 
+szintjén van roppant ésszerűen   megszervezve. Itt például nem fordulhat elő, hogy ötperceket kell 
+várakozni egy járdaszigeten, mert   a két odavezető gyalogátkelőn nem egyszerre lesz zöld a lámpa. A 
+közlekedési tilalmak nem önmagukért   vannak, hanem ha valamit megtiltanak, annak egészen 
+nyilvánvaló oka van, és kézenfekvően felkínálják   az alternatív megoldást, kerülő útvonalat is. 
+Senki sem idegbeteg, senki sem rohan, nem   gázolja le a másikat, mert tudja, hogy időben oda fog 
+érni, és nem kell megküzdenie minden egyes   méterért.<br><br>S hogy mennyibe került ez a közlekedés 
+nekem? A napijegy, ami az 1-estől 4-es   zónákig volt érvényes, 7 font 70 pennybe, azaz kb. 2850 
+forintba került. A budapesti 24 órás jegy   1550 forint. Igen ám, de a londoni jegy csaknem a 
+teljes, 1577 négyzetkilométernyi Greater London   területén érvényes, ami háromszor akkora, mint 
+Budapest. S nemcsak a metrón és a buszon, hanem a   vasúton is elfogadják, és a folyami 
+átkelőjáratokon is 33%-os kedvezményre jogosít.<br><br>Mi a   különbség Budapest és London között? 
+Az, hogy a londoniak egyrészt nem utálják egymást, másrészt nem   képzelik azt, hogy társadalmi 
+pozíciót jelent, ha autóval járnak, és másokat legázolnak. Akinek az a dolga, hogy a   
+tömegközlekedést működtesse, nem szívességet tesz, hanem munkát végez, szolgáltatást nyújt. Aki   
+pedig mindezt igénybe veszi, általában nem befordult, deprimált nyomorék, hogy első dolga   
+szétverni, letépni, összefirkálni bármit, ami jó és működik. No és persze az ő polgármesterüket 
+sohasem hívták Demszky   Gábornak. Igaz, egyik Lord Mayor sem ismételgette elrévedt tekintettel, 
+hogy "világvárost építünk",   hanem helyette egyszerűen építette, és a munkatársai sem azzal voltak 
+elfoglalva, hogy ki tud többet   bezsebelni a közös kasszából.<br><br></div>   <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=1&amp;startdate=2012-05-17&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+<div class="textbanner">
+<b>Vegyen korszerű seggvakarógépet!</b><br>
+Az Anus-Comfort Kft. termékei az Ön végbelét is elkényeztetik! Hívja most.<br>
+<a href="showpost.php%3Fid=159.html#" onclick="clickbanner(2);">Anus-Comfort!</a>
+</div>
+</div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(159, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 05, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120520193517id_/http://www.tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "http://piwik.sidripalliance.com/piwik/" : "http://piwik.sidripalliance.com/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.sidripalliance.com/piwik/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+</body>
+</html>

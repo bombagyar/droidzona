@@ -1,0 +1,344 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=216">Fontos kérdés</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-08-04</span><br><a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=210">Csatáry, Mátsik és Szegedi</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-07-30</span><br><a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=192">Béerefká did it again...</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-07-01</span><br><a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=176">Pixel gazdát keres</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-06-09</span><br><a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=157">Megvédjük a Főméltóságú úr szobrát?</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-05-14</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br><a href="http://www.trueamericandog.com" target="_blank">True American Dog</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>Panzer Corps: Wehrmacht</h1>
+<h2>2012. augusztus 2., csütörtök</h2>
+
+<div align="justify">XXI. századunk második évtizedének elején kétféle       
+videojátékot különböztethetünk meg. Vannak a mainstream játékok, amit   arra terveztek, hogy     
+megvegye 9-10 millió idióta. Ezeknek a lényege a   hollywoodi szintű látványvilág, valamint     
+legfeljebb két gomb használata,   amelyeket ha elégszer megnyomunk, a program agyondicsér, hogy     
+milyen   ügyesek vagyunk. S vannak az indie játékok, amelyeket még a régi jó   iskolát képviselő, de 
+    ma érdemtelenül mellőzött X-generációs szakik   írják, akik még ahhoz szoktak, hogy a játékkal   
+  játszani kell, nem pedig   csak nézni, amint megoldja magát.<br>    <br>  Mert bizony ezek a 
+    régi programok ma már "nem piacképesek". Agy kell   hozzájuk, intelligencia, nem arról szólnak, 
+hogy     egy nevetségesen   egyszerű és lineáris pályán "achievement"-eket gyűjtsünk be. Éppen ezért 
+  halt     ki a szöveges kalandjáték, a stratégia vagy a szimulátor műfaja,   hiszen sokkal többet 
+el lehet     adni az ötlettelen-agyatlan FPS-ekből,   amelyeket már meg sem lehet különböztetni 
+egymástól. A mai     játékok nem   kalandot, hanem sikerélményt kínálnak. Abba jobb bele sem 
+gondolni,   milyen lehet a     mai tizenévesek élete, hogy számukra stresszt jelent a   gondolkodás. 
+Vagy agyonversenyeztetik   őket,   vagy rendkívül hülyék. Vagy   mind a kettő.<br>    <br>  E hosszú 
+bevezető után hadd   mutassam be   nektek a <i>Panzer Corps</i>   című játékot, amelyet az angol The 
+Lordz Games Studio   és a Slitherine     Studios indie műhelyeknek köszönhetünk. A Slitherine-nak 
+eredetileg nem   is   szoftverfejlesztés   volt a fő területe, hanem táblás stratégiai   játékok, de 
+az elmúlt években   mégis több tucat   számítógépes stratégiai   játékot készítettek PC-re és 
+különféle konzolokra. Ezek   csúcsterméke a   <i>Panzer Corps,</i> ami nem más, mint a jó öreg 
+<i>Panzer General</i>   remake-je,   a mai kornak   megfelelő színvonalon. Ez alatt persze ne azt   
+tessék érteni, hogy anime-figura lett   Rommelből vagy   egy Pz-II   parancsnokának szemszögéből, 
+3D-ben harcolászhatjuk végig a sedani     áttörést.<br>      <br>    <div align="center"><iframe width="420" height="315" src="http://www.youtube.com/embed/6OkF8WsKXGk" frameborder="0" allowfullscreen></iframe><br>    </div>    <br>    Remake alatt tényleg   remake-t kell 
+érteni. Ez nem a <i>Panzer General II.</i> vagy a <i>III.,</i>   hanem a <i>Panzer   General,</i>   
+az eredeti, 1994-es remekmű remake-műve. Aki azzal játszott,   ezzel is   rögtön tudni   fog. A 
+felület bár kicsit más, de meglepően hasonló, a   koncepció pedig   egy az egyben ugyanaz. A   
+térkép hatszögletű mezőkre van   osztva, ezeken lehet mozgatni az   egységeket, és egymásra 
+lövöldözni     velük. Az eredmény természetesen függ attól, hogy milyen   egységről   beszélünk - 
+óriási különbség   van például egy Pz.I. és egy Pz.IVD között -   a   legénység mennyire képzett, 
+milyen terepen mozog,   milyen az időjárás,   és mit támadtunk meg vele.   Szemmel kell tartani az 
+egységek üzemanyag-   és   lőszerfogyasztását is. A feladat egyes kijelölt   stratégiai pontok,   
+települések elfoglalása vagy   megvédelmezése. Minden egyes körben     vásárolhatunk is új 
+egységeket, ha van elég tábornoki   presztízspontunk,   amit egyébként   települések elfoglalásával 
+és ellenséges egységek     elpusztításával növelhetünk, vagy utánpótlást   küldhetünk leharcolt   
+egységeinknek, amelyek cserébe   abban a körben nem léphetnek. Röviden     ennyi a 
+terepasztal-stratégia eddigi legsikeresebb   átültetése   számítógépre, ám egyszerűsége   ellenére 
+ez a játéktörténelem   legösszetettebb és   legélethűbb háborús szimulációja. (Tudtátok,   hogy az   
+eredeti <i>Panzer General </i>csupán belső   használatú tesztprogram lett volna az azt   kiadó SSI 
+műhelyében?)<br>    <br>  A <i>Panzer Corps</i>   tökéletesen vette át a PG valamennyi   
+stíluselemét,   sikerült megvalósítaniuk ugyanazt a hangulatot   és játékélményt, de   egyúttal   
+kiküszöbölték az eredeti játék néhány bosszantó hülyeségét. Így     például nincsenek többé   
+legyőzhetetlen szövetséges egységek, mint az   eredetiben a Matilda-II tank   vagy a P-51 Mustang   
+vadászgép. Egy sarokba   szorított ellenséges gyalogzászlóalj nem fog az utolsó,   legkritikusabb    
+ pillanatban hirtelen <i>rugged defense</i> bónuszt kapni a védekezésre,   hogy   veszteség nélkül   
+verjen vissza minden támadást, miután több   nehézüteg és bombázóezred is   megsorozta őket. (Azért  
+ előfordul így is,   de ésszerű mértékben, hiszen az eredeti játék   feltételezte, hogy   bármilyen  
+ szövetséges katona szorult helyzetben Terminátorrá változik.)   Az AI   nem csal pofátlanul, neki   
+sincs korlátlan presztízspontja.   Egyúttal sokkal szélesebb skálán lehet   állítani a játék   
+nehézségét, ami   az eredeti játékban a még éppen csak játszhatótól a lehetetlenig     terjedt. Itt  
+ akár chicken fokozatot is beállíthatunk, ha nem játszani,   hanem csak az ikonokat   tologatni   
+szeretnénk.<br>    <br>    <div align="center"><iframe width="420" height="315" src="http://www.youtube.com/embed/RBRJy4ojdVM" frameborder="0" allowfullscreen></iframe><br>    </div>          
+<br>  A <i>Panzer Corps</i> egyetlen igazi, de lényeges újdonsága a vasút   megjelenése. Az eredeti  
+   PG sorozatban a sínek csak dekoráció gyanánt   szolgáltak, de itt valódi stratégiai értékük van,  
+   segítségükkel gyorsan   át lehet dobni egységeket a pálya egyik feléről a másikra. Feltéve   
+persze,     hogy valami piszok ellenség el nem vágja a vonat útját.   Bármilyen szárazföldi egységet 
+bármely     vasútállomással rendelkező   városban felpakolhatunk a vonatra, de lepakolni csak egy 
+másik     állomáson   lehet, terepen nem, és a kipakolás egy egész körbe kerül. További   újdonság, 
+hogy     miként a <i>Panzer General II</i>-ben, az egyes egységek   kaphatnak kitüntetéseket, és ha 
+elég jó     eredményeket érnek el,   előbb-utóbb ismert hős lesz a parancsnokuk, ami tovább emeli a 
+csapat       morálját és ütőképességét.<br>    <br>  Természetesen egy sor olyan egység is 
+megjelenik, ami az     eredeti PG-ben nem volt benne. Így például bevethetjük a <i>Dora</i>   
+óriáslöveget, a Churchill     Krokodil lángszórós tankot, a Maus   óriásharckocsit és hasonlókat. Az 
+persze magától értetődik,     hogy egyes   történelmi csaták megnyerése esetén, amelyek a valóságban 
+elvesztek, a   történelem is     másképpen alakul, és megvalósul a Seelöwe-hadművelet, vagy   az 
+Egyesült Államok német lerohanása     1946-ban. A játék széles   lehetőséget kínál a moddolásra, és 
+már meg is jelent egy sor kiegészítő,       hivatalos és nem hivatalos egyaránt. Így például a 
+<i>Grand Campaigns</i>   modul, amely az   eredeti   hadjáratok kiterjesztett változatait   
+tartalmazza, és egy sereg alternatív történelmi   eseményt. A   XXI.   században az internetes játék 
+lehetősége is magától értetődik.<br>    <br>  A   <i>Panzer   Corps</i> letölthető a Slitherine 
+weboldaláról 30 angol   fontért, ami kissé borsos ár   más   játékokhoz viszonyítva, de hát   
+független a kiadó, és sajnos nem fogják tízmilliós   nagyságrendben   eladni   a remekművüket. A 
+dobozos változat egy tízessel több. Bizalmatlanabbak     letölthetik a   programot valamelyik 
+torrentszerverről is, de akinek   tetszett, legyen szíves,   támogassa a   készítőket az eredeti   
+megvásárlásával.<br>    </div>   <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=1&amp;startdate=2012-08-02&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+<a style="cursor: pointer;" onclick="clickbanner(1);"><img src="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_1.jpg" alt="Hirdetés"></a></div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(215, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 08, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120804045441id_/http://www.tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "http://piwik.sidripalliance.com/piwik/" : "http://piwik.sidripalliance.com/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.sidripalliance.com/piwik/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+</body>
+</html>

@@ -1,0 +1,342 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=194">Ismerkedés a gépekkel</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-07-04</span><br><a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=193">Pixerelem</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-07-01</span><br><a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=192">Béerefká did it again...</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-07-01</span><br><a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=191">A MÁV morálja változatlan</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-06-28</span><br><a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=190">Rózsika néni az Árpád utcából</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-06-24</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br><a href="http://www.trueamericandog.com" target="_blank">True American Dog</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>Iron Sky: kötelező!</h1>
+<h2>2012. június 11., hétfő</h2>
+
+<div style="text-align: justify;"><img src="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/ironsky_1.jpg" class="img_right" alt="" title="">A nagy-nagy kampánnyal beharangozott, ámde nézhetetlen <span style="font-style: italic;">Prometheus </span>mellett csendesen elkészült az utóbbi évek legnagyobb  
+   netes közösségi kezdeményezése, az <span style="font-style: italic;">Iron Sky</span> című kis     
+költségvetésű finn sci-fi. Mivel a film a blaszfémia határát súrolja bizonyos körökben, nem csoda,   
+  hogy mindenhol csak rosszat olvashatunk róla.<br><br>"Unalmas", "lapos", "nem elég vicces",  
+   így fanyalogtak azok a bértollnokok, akik amúgy az összes fingós-baszós amerikai tinivígjátékot   
+  "fergetegesként" jellemzik. Az <a href="http://www.google.com/url?sa=t&amp;rct=j&amp;q=&amp;esrc=s&amp;source=web&amp;cd=1&amp;ved=0CIkBEBYwAA&amp;url=http%3A%2F%2Fwww.origo.hu%2Ffilmklub%2Fblog%2Friport%2Ffilmfesztival%2F20120213-iron-sky-kritika-nem-eleg-viccesek-az-urnacik-berlinale-2012.html&amp;ei=aMXVT__CPMjdtAbsrrnbDw&amp;usg=AFQjCNHWFIIUVR8nIRnGM73sXWq8qMUdAQ&amp;sig2=6q5996Xh0gDFa_AHLoKX2Q">Origo</a>
+  például odáig elment a fikázásban, hogy azt állította, a Berlinalén "hűvösen" fogadta a közönség 
+az     űrnácis paródiát, az egyik színészt pedig kérdőre vonták, hogy "hogy merészelt" ilyen filmben 
+    játszani, hiszen a nácikkal nem szabad viccelődni, mert a holokauszt, és a többi. Idézet:&nbsp; <br><h6>Nevetés alig, kuncogás elvétve hallható a világpremier műértő 
+közönségének tartott vetítésen. A kitörő nevetés és a film végi taps 
+elmarad.</h6>A "kritikus"   
+  hitelességét könnyű ellenőrizni, hiszen a bemutató vetítés utáni ováció megtekinthető a <a href="http://www.youtube.com/watch?v=x2SF8eEI22k">YouTube-on,</a> és nekem nem úgy tűnik, mintha az  
+   1700 fős közönség csendben volna. (Ja, és prolikám, nem <span style="font-style:     
+italic;">crowd founding,</span> hanem <span style="font-style: italic;">crowd funding,</span> ha már 
+    villogni akarsz az alapfokú nyelvvizsgáddal.)<br><br>A valóság ezzel szemben az, hogy az <span style="font-style: italic;">Iron Sky</span> drasztikusan szembemenetel a hollywoodi trendekkel, a    
+ kötelező politikai korrektséggel - miközben nem sért meg senkit - és laza csuklómozdulattal vágja   
+  orrba egy görbe tükörrel a teljes XXI. század eleji világot, beleértve a Nagy Amerikát, a 
+Szabadság     Hazáját, az álszent globalizációt, a tömegmédiát, korunk szellemi-lelki 
+igénytelenségét. A     legmodernebb eszközökkel társítja a klasszikus, agyat és&nbsp; gondolkodást, 
+no meg némi műveltséget     igénylő vígjáték-elemeket. Friss és szellemes, nem csoda, hogy a sznob 
+panelproli fészkelődni kezd   a   székben, és a végén hőbörögve távozik a moziból. IQ teszt sok 
+CGI-vel, ha úgy     tetszik.<br><br>Hipsterezzetek le, de én már akkor bírtam Timo Vuorensola 
+filmjeit, amikor itthon -     vagy bárhol máshol - még azt sem tudták, kicsoda. Előző filmjéből, a 
+<span style="font-style:     italic;">Star Trek-</span> és <span style="font-style: italic;">Babylon 
+5</span>-univerzumokat rommá     parodizáló <span style="font-style: italic;">Star Wreck: The 
+Pirkining</span>ből például itt   figyel   a személyesen dedikált DVD a polcomon. Akárcsak az a 
+film, ez is inkább a szélesebb   látókörű, sci-fi   rajongó közönségnek készült. A klasszikus 
+elvekhez hűen nem a látványvilágnak   rendel alá mindent,   hanem a hihető történetnek, az életszerű 
+színészi alakításnak, és csak ezeket   egészíti ki a   látványos űrcsatákkal, a <img src="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/president_un-copy.jpg" class="img_left" alt="" title="">New Yorkot 
+meteorokkal bombázó náci repülő csészealjakkal, a Hold   túloldalán felépült,   horogkereszt formájú 
+titkos erőddel. A színészek pedig mindent meg is   tesznek, hogy karaktereikbe   életet vigyenek. 
+Zseniális mind az öt főszereplő: a holdbéli nácik   feletti uralmat puccsal megszerző   új <span style="font-style: italic;">Mondführer,</span> a Sarah   Palinra bizonyára csak véletlenül   
+emlékeztető amerikai elnöknő és az ő szexuálisan kissé túlfűtött   kampányfőnöknője, a   
+holdnáci-gyerekeket oktató fiatal, árja tanítónő, és a néger űrhajós, aki   egyébként fotómodell, és 
+  csak választási kampányfogásként küldték a Holdra. Rommá röhöghetjük   magunkat a világpolitika 
+valódi   helyzetét parodizáló ENSZ-gyűlésen, ahol a finnek egy kicsit saját   országuknak is 
+beszólnak. Számos   jelenetben felfedezhetjük egy sor klasszikus film   kulcsjeleneteinek 
+paródiáját, de nem a szokásos   otromba hollywoodi módon, hanem néha olyan   finoman, hogy csak 
+többszöri megnézés után esik le a   tantusz. A sok finoman hangolt,   intellektuális humorforrás 
+után pedig a finálé tartogat   elgondolkodtató pillanatokat: vajon ha   lennének nácik a Holdon, 
+nekünk kellene félnünk tőlük, vagy   fordítva?<br><br><img src="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/klaus_with_mobile_phone-copy.jpg" class="img_left" alt="" title="">Firkáljon  
+ a sok médiabohóc amit akar, számomra eddig az<span style="font-style:   italic;"> Iron Sky</span> 
+az   év filmje. Aprópénzből, közösségi erőfeszítésből ilyen alkotást   összehozni - Vuorensola 
+bevallása   szerint a teljes költségvetés nagyjából annyi volt, mint egy   hollywoodi film büféjének 
+  költségkerete - igazi zsenialitást kíván, és ezt a finnek   nagyszerűen összehozták. Mindezt úgy,  
+ hogy nem adták el magukat senkinek, és nem megnevelni, hanem   szórakoztatni próbálták a 
+közönséget.   Nagyszerű sikerrel!<br><br>S hogy legyőzik-e az amerikaiak a   Holdról jövő nácikat? 
+Nézzétek meg,   és kiderül az is, hogy egyáltalán le kell-e őket győzni. Az   <span style="font-style: italic;">Iron   Sky</span>-t moziban sajnos (egyelőre) nem játsszák, így csak   
+letölteni tudjátok, de tisztelettel   megkérek mindenkit, hogy rendeljétek meg a DVD-t az <a href="http://www.ironsky.net">ironsky.net</a>-ről. Ez a csapat megérdemli a támogatást, hogy még     
+több ilyen filmet készíthessenek. Az oldalon a film zenéjét is megrendelhetitek, amelyet a Laibach 
+komponált és ad elő. Zsír!<br><p class="img_title"><img src="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/valkyries_incoming_02-copy.jpg" class="img_center" alt="Iron Sky 4." title="Iron Sky 4."></p><br><br><br></div>    <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=1&amp;startdate=2012-06-11&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+  
+  <div class="flashbanner" style="width: 468px; height: 60px;">
+  <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://active.macromedia.com/flash4/cabs/swflash.cab#version=4,0,0,0"
+  id="name" width="468" height="60">
+  <param name="movie" value="images/banners/banner_3.swf">
+  <param name="quality" value="high">
+  <param name="wmode" value="opaque">
+  <param name="flashvars" value="bannerid=3">
+  <embed name="name" src="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_3.swf" 
+    quality="high" 
+    wmode="opaque" 
+    width="468" 
+    height="60" 
+    type="application/x-shockwave-flash"
+    flashvars="bannerid=3"
+    pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash">
+  </embed>
+  </object>
+  </div>     
+
+</div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(180, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 06, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120705000840id_/http://www.tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "http://piwik.sidripalliance.com/piwik/" : "http://piwik.sidripalliance.com/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.sidripalliance.com/piwik/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+</body>
+</html>

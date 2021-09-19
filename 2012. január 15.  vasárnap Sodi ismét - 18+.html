@@ -1,0 +1,324 @@
+
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=52">Így lett emléktáblája Wesselényi Miklósnak</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-01-19</span><br><a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=51">Megint felmentettek</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-01-19</span><br><a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=50">Néni a liftben</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-01-19</span><br><a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=49">Kockáknak kötelező</a><br><span style="font-size: 10px; color: #888888;">Blog - 2012-01-18</span><br><a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=48">Metródroid</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-01-18</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br><a href="http://www.trueamericandog.com" target="_blank">True American Dog</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>Sodi ismét - 18+</h1>
+<h2>2012. január 15., vasárnap</h2>
+
+<div style="text-align: justify;"><a href="http://tomcatpolo.hu/droidzona/showpost.php?id=41">Tegnapi képünk</a> után további anyagok     
+  érkeztek   a Nemzet Bloggerétől, aki oly buzgón védi évek óta a nemzet erkölcsét. Lássuk ezeket, s 
+      azt is, mit   mond ezekről maga Sodi. Csak felnőtteknek!<br><br>Sodinak nemcsak a       
+könyvjelzőjében vannak   érdekes dolgok. Az Indavideó Erotika rovatában számos <a href="http://erotika.indavideo.hu/video/Fapoleon">videót</a> is találhatunk róla, amelyeken         
+bizonyítja, hogy egyedül is jól érzi magát egy webkamerával.<br><br><div style="text-align: center;  
+       font-style: italic;">Ez itt a kép helye. Akit tényleg érdekel, mi lenne itt, kattintson a   
+linkre     ott   fenn.<br></div><br>Na de honnan lehet tudni, hogy ez itt Sodi? A jellegzetes   
+testalkaton   kívül   a   felsőtestén látható anyajegyek. Korábban a blogján több félmeztelen képet  
+ közzétett, ezeken ellenőrizhető.<br><p class="img_title"><img src="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/images/gallery/sodifelmeztelen.jpg" class="img_center" alt="Sodi félmeztelenül" title="Sodi félmeztelenül">Sodi félmeztelenül</p><br>De kérdezzük meg a    
+ legilletékesebbet, vajon valóban   ő van-e a   videón, és hogyan került ez     
+nyilvánosságra.<br><h6>Évekkel ezelőtt, egyetemista koromban   a nagy   egyedüllétben egyszer így    
+ kerestem csajt, mert láttam, hogy másik is ezt teszik, manapság   pedig már   nem teszek ilyet.     
+Ennyi.<br><br>SoDI</h6>Érdekes módszer. A bökkenő csak az, hogy a   fenti videó   mindössze 17 órája 
+    került fel, és küldője szerint 2 napja jelent meg valahol máshol.   Erről mi a   véleménye     
+Sodinak?<br><h6>Az lehet, hogy éppen frissebb, de az meg nem társkereső   oldalról való, és   főleg  
+   nem arról az oldalról, ahonnan hazudják. Ugyanaz a technikájuk, mint   régen. Fogják a valódi     
+  tényeket, és rádobnak még egy lapáttal.</h6>Ó, csak nem? Hát már megint   a... azok a... ki sem    
+ merem   mondani? Szörnyű, hogy ezek mindenhol ott vannak. Akit érdekel Sodi   "hivatalos"     
+magyarázata, olvassa   el a <a href="http://sodiprivate.wordpress.com">sodiprivate.wordpress.com</a> 
+    oldalon. Amúgy a videó küldője   nem "hazudott" semmit, csupán elküldte   az indavideós linket.  
+ Hogy   eredetileg hová töltötte fel   Sodi, azt mindjárt megtudjuk tőle magától...<br><h6>Nem     
+igaz, nem találsz rólam   sehol semmilyen videót. A   csütörtökön vásárolt vadiúj webkamerámat talán 
+    tényleg felavattam egy   goldengate.hu-s videóval   (amit a szemét trollok más forrásnak   
+hazudnak), de   azt garantálom, hogy   évek óta nincs és nem is   volt más videó.</h6>Aha. Hát igen, 
+  évek óta nem volt,   de hát egy új   webkamera az más, azt   mégiscsak ki kell próbálni   
+valamivel.<br><h6>Buzi pedig továbbra   sem   vagyok, hiába reménykedsz   abban, hogy ezen külön   
+tudsz esetleg röhögni.</h6>Pedig már     reménykedtem.<br><h6>A lényeg annyi,   hogy sose   
+propagáltam liberális bomlasztást, sose voltam     férfival, és ha hülyeségből esetleg   posztoltam  
+ is magamról anyagokat, azokat anonim módon és olyan     helyekre tettem, ahol százával akad   amúgy 
+  is hasonló anyag. Emellett az utóbbi két évem azzal     jellemezhető, hogy egyetlen szexuális     
+partner, váltás nélkül ugyanaz a nő. Akárhogy     csűrjük-csavarjuk a szót, mindez így együtt bizony 
+    nem olyan körülmény, ami lerombolná a     személyiségemet, legfeljebb kicsit kellemetlen lehet,  
+ amit   persze érzek is, ezért is kommunikálom   le   ma este az igazságot a blogomra.</h6>Különös,  
+ de én sem   érzem úgy, hogy különösebben rombolva   lenne   Sodi személyisége. Folytatva az   
+érvelést...<br><h6>A   normalitással kapcsolatban pont tőled   származik   az a gondolat, hogy már   
+az sem "normális", ha az   ember hozzánk hasonlóan sokat   foglalkozik   közélettel. Nyilván a   
+kicsit is átlagos ember nem lehet   érdekes. Én másoknak nem az   magánéleti   erkölcsét (ugyanis   
+ami négy fal között van, ahhoz senkinek   semmi közé), hanem az   úriember mivoltát   minősítettem   
+valaha is, valamint azt, hogy tartja-e a   szavát, következetes-e   korábbi önmagához és   nyilvános 
+  ígéreteihez, vagy esetleg kevésbé.</h6>Ah,   hát ez valóban   kikezdhetetlen, adamantium     
+szilárdságú erkölcsi alap. És nincs ám   vége!<br><h6>Szerintem meg ami   szigorúan arc és név   
+nélkül   van eldugva egy specifikus weboldal   (goldengate) többszörös életkor   -és "tényleg ezt   
+akarod   látni"-megerősítése mögé sok száz hasonló   anyag között, az bizony igenis   négy fal   
+közötti dolognak   minősül. Abszolút magánszférának, amihez   a közéleti szerepvállalásnak   semmi   
+de semmi köze.<br><br>Az   egyetlen ok, amiért hajlandó vagyok a   blogomon kommunikálni, mert   az  
+ igazságot hazugságokkal   egészítik ki egyesek.</h6>Tetszik érteni:   Sodi barátunk évek óta     
+rejszol kamerába a hölgyek   kedvéért, de ez hazugság. <br><h6>Nekem a   kezdetektől kezdve mindig   
+  is az volt az értékrendem, hogy   a magánélet az magánélet. Sőt: olyat még   a Kurucon sem láttam, 
+    hogy bárminek is pusztán a magánélete   miatt mentek volna neki (mondjuk   teszem azt mert 
+buzi),     hanem ha ilyesmit meg is említettek   valakivel kapcsolatban, a fő szál akkor   is az 
+illető     magyarellenes politikai tevékenysége volt.   (Steiner Kristóf, Karsay Dóri, Orosz   
+József, Alföldi     Róbert).</h6>Meg például BlueBunny, akiről   külön cikksorozatban híresztelték 
+el,   hogy perverz     dominakurva, csak hogy lejárassák a Bombagyár   szerkesztőit... Nyilván ő is 
+valamiféle       magyarellenes összeesküvésben vett részt. De Sodi ezt is   
+megmagyarázza.<br><h6>Nála a vélt       foglalkozása vághatta ki Kurucéknál a biztosítékot. Hogy 
+bizonyos   állítások szerint kuncsaftokat       fogad. Ezzel szemben az én most lebukott régi 
+hirdetéseimben   világosan ki van emelve, hogy       "anyagiak kizárva", ráadásul durvább 
+perverzióról nem esik szó.   </h6>Bizonyos állítások szerint...       Micsoda korrekt források... 
+Amúgy milyen lebukott hirdetés? Ja,   igen, <a href="http://szexi.info/index.php?option=com_adsmanager&amp;page=show_ad&amp;adid=618&amp;catid=2&amp;Itemid=37">ez.</a><br><img src="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/images/gallery/sodihirdetes.jpg" class="img_center" alt="" title=""><img src="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/images/gallery/trollface.jpg" class="img_right" alt="" title="">Végül mi a véleménye Sodinak 
+        erről az egészről? Mármint hogy közzétettem ezt itt...<br><h6>A legkevésbé sem vagy 
+úriember,   de       ezen már nem lepődöm meg. A levéltitkot sem ismered. Az sem.</h6>Igazán nagyon  
+       sajnálom.<br><h5><span style="font-weight: bold;">Helyreigazítás Sodi kifejezett 
+kérésére.</span> A cikk elején azt írtam, hogy "az Indavideó Erotika rovatában számos videót is találhatunk róla". A valóság ezzel szemben 
+az, hogy az Indavideón csak egy ilyen videó található. A többit a Freevlog videómegosztóján 
+található. A pontatlanságért elnézést kérünk Kiss Endre Farkas "Recskaboytól". Aki egyébként azóta már azt állítja, hogy a <a href="http://recskaboy.freeblog.hu">recskaboy.freeblog.hu</a>-n látható videókon nem ő van, noha a fenti, bevallottan tőle származó hirdetésben ezt az oldalt sajátjaként reklámozza.<br></h5></div>    
+ <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/index.php?category=2&amp;startdate=2012-01-15&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+<a style="cursor: pointer;" onclick="clickbanner(1);"><img src="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/images/banners/banner_1.jpg" alt="Hirdetés"></a></div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(42, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 01, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120120182839id_/http://tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+</body>
+</html>

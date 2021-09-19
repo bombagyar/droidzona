@@ -1,0 +1,347 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="hu">
+
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<meta http-equiv="description" content="Droidzóna - Mert a hülyeség fáj!">
+<meta name="keywords" content="droid droidzóna hülye hülyeség barom humor poén droidsztori tomcat">
+
+<title>Droidzóna</title>
+
+<link href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/css/style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/css/text_style.css" rel="stylesheet" type="text/css">
+<link href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/css/jqtransform.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/css/modal-window.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE]>
+  <link href="css/style_ie.css" rel="stylesheet" type="text/css">
+  <link href="css/text_style_ie.css" rel="stylesheet" type="text/css">
+<![endif]-->
+
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/javascript/admin.js"></script>
+<script type="text/javascript" language="JavaScript" src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/javascript/user.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery-1.6.min.js"></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/js/jquery.jqtransform.js" ></script>
+<script type="text/javascript" src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/javascript/modal-window.min.js"></script>
+
+<script type="text/javascript">
+		$(function(){
+        $('form').jqTransform({imgPath:'pic/jqtransform'});
+		});
+
+</script>
+
+</head>
+
+<body>
+
+<center>
+
+<div id="header" class="main_header">
+  <a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=BLOG">blog</a>
+  <a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=DROIDZONA">droidzóna</a>
+  <a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=LEVROV">levrov</a>
+  <a href="http://www.tomcatpolo.hu" target="_blank">bolt</a>
+  
+  <div id="searchform" class="searchform">
+    <div style="background: url(https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/pic/search.png) right top no-repeat; padding-top: 2px; width: 190px; height: 28px;">
+      <input type="text" name="search" id="search" style="width: 150px;" onfocus="this.select();" value="Keresés...">
+      <div class="searchbutton" onclick="document.location.href='search.php?search='+encodeURI(document.getElementById('search').value);"></div>
+    </div>
+  </div>
+
+  <div style="margin-left: 140px; width: 365px; height: 170px; padding-top: 0px; margin-top: -18px;" onclick="window.location.href='index.php';"></div>
+
+</div>
+
+<div id="main" class="main_area">
+
+<! ----------------------- SIDEBAR ELEJE ----------------------- !>
+
+<div id="boxes" class="boxes">
+
+<script language="JavaScript" type="text/javascript">
+  
+  function logout() {
+    if (confirm('Biztosan kilépsz?')) {
+        http_request = getHTTPObject();
+        post(http_request, 'action=logout', 'ajax/ajax_registration.php', logout_done);
+    }
+  }
+  
+  function logout_done() {
+    if (http_request.readyState == 4) {
+      document.location.reload();
+    }
+  }
+
+  function checklogin() {
+
+    result = '';
+    result = checkstring2(document.getElementById('login_username').value, 3, 255, 'Nem adtad meg a felhasználóneved.', 'A megadott felhasználónév túl rövid.', 'A megadott felhasználónév túl hosszú.');
+    if (result == '') result = checkstring2(document.getElementById('login_password').value, 3, 255, 'Nem adtad meg a jelszót.', 'A megadott jelszó túl rövid.', 'A megadott jelszó túl hosszú.');
+    
+    if (result != '') { loginerror(result); return false; }
+    else return true;
+  }
+
+  function login() {
+      if (checklogin()) {
+          http_request = getHTTPObject();
+          post(http_request, 'action=login&username='+encodeURI(document.getElementById('login_username').value)+'&password='+encodeURI(document.getElementById('login_password').value), 'ajax/ajax_registration.php', login_done);
+      }
+  }
+
+  function login_done() {
+    if (http_request.readyState == 4) {
+    
+        switch(http_request.getResponseHeader('error')) {
+          case '0': document.location.reload(); break;
+          case '1': loginerror('Helytelen felhasználónév vagy jelszó.'); break;
+          case '2': loginerror('Ez a felhasználónév még nem aktív.'); break;
+          case '3': loginerror('Ki vagy tiltva a Droidzónáról.'); break;
+          case '4': loginerror('Adatbázis-hiba:<br />'+http_request.responseText); break;
+        }
+    }
+  }
+  
+function loginerror(text) {
+    var error = document.getElementById('loginerror');
+    error.innerHTML = text;
+    error.style.visibility = 'visible';
+    error.style.display = 'inline-block';
+}
+   
+</script>
+
+
+  <div id="login" class="box">
+    <div class="boxheader"><p>login</p></div>
+    <form><p>
+    júzernév:<br >
+    <input type="text" id="login_username" name="login_username" value="" style="width: 155px;">
+    <br >
+    pesszvörd:<br >
+    <input type="password" name="login_password" id="login_password" value="" style="width: 155px;">
+    </p>
+    <div id="loginerror" name="loginerror" class="formerror" style="padding: 0px 10px 0px 10px;"></div>
+    <p>
+    <input type="button" value="belépés" name="loginbutton" id="loginbutton"><br >
+    <a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/register.php">regisztrálnák ide e</a><br >
+    <a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/forgotpassword.php">hülye vagyok, elfelejtettem</a>
+    </p></form>
+  </div>
+
+<script type="text/javascript" language="JavaScript">
+  
+//  Button onclick implementations... because onclick does not work with jqTransform
+
+  $(function() {
+      $("form.jqtransform").jqTransform();
+      $("#loginbutton").click(login);
+  });
+
+</script>
+
+<script type="text/javascript" language="JavaScript">
+
+function flipcalendar(year, month, category) {
+  calendar_http_request = getHTTPObject();
+  post(calendar_http_request, 'year='+encodeURI(year)+'&month='+encodeURI(month)+'&category='+category, 'ajax/ajax_calendar.php', flip_done);
+}
+
+function flip_done() {
+  if (calendar_http_request.readyState == 4) {
+    document.getElementById('calendar').innerHTML = calendar_http_request.responseText;
+  }
+}
+
+</script>
+
+  <div id="calendar" class="box">
+  </div>
+
+
+  <div id="banner_side" class="box">
+    <div class="boxheader"><p>hirdetés</p></div>
+    <div style="text-align: center; margin: 10px auto 10px auto; padding-bottom: 10px;">
+<a style="cursor: pointer;" onclick="clickbanner(8);"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_8.jpg" alt="Hirdetés"></a>  </div>
+  </div>
+
+  <div id="links" class="box">
+    <div class="boxheader"><p>legutóbbiak</p></div>
+    <p>
+<a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=148">Mentség</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-04-29</span><br><a href="showpost.php%3Fid=147.html">Liberális üzenetek</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-04-26</span><br><a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=146">Vannak a Postánál is nagyobb droidok</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-04-24</span><br><a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=145">Egy bátor antifasiszta szavai</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-04-23</span><br><a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=144">Rózsimisi legújabb kalandjai</a><br><span style="font-size: 10px; color: #888888;">Droidzóna - 2012-04-20</span><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>ezek jók</p></div>
+    <p>
+<a href="http://www.hipsterhitler.com" target="_blank">Hipster Hitler</a><br><a href="http://zarthelyiosztaly.blogspot.com/" target="_blank">Lyunivörziti of Ószom</a><br><a href="http://www.naczivadasz.com" target="_blank">Náczivadász</a><br><a href="http://www.napirajz.hu" target="_blank">Napirajz</a><br><a href="http://www.romanticallyapocalyptic.com" target="_blank">Romantically Apocalyptic</a><br><a href="http://www.trueamericandog.com" target="_blank">True American Dog</a><br>    </p>
+  </div>
+  <div id="links" class="box">
+    <div class="boxheader"><p>feed</p></div>
+    <p>
+
+    <a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/rss.xml">rss 2.0</a>
+
+    </p>
+  </div>
+
+</div>
+
+<! ----------------------- SIDEBAR VEGE ----------------------- !>
+
+
+<div class="text_area">
+<h1>Liberális üzenetek</h1>
+<h2>2012. április 26., csütörtök</h2>
+
+<div style="text-align: justify;">Ahogy a HunHír fogalmazott, az antifáknak     
+jobban fáj a számomra gyűjtött fejenkénti ezres, mintha egy század gárdista venné ki a veséjüket az  
+   Andrássy út közepén. Lássunk néhány hozzászólást a <span style="font-style: italic;">700-an 
+1000-et     Rózsa Mihályért </span>klubból.<br><br>Visszatérő téma, hogy hogyan lehetne engem 
+okosan,     ügyesen, szellemesen megleckéztetni, például azzal, hogy visszaperelnek. A stratégia 
+tervezése     különösen gördülékenyen megy, mivel a jogrendszert is maguk találják ki hozzá. Lássunk 
+néhány     példát.<br><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+5.17.13+pm.jpg" class="img_center" alt="Az első     
+érdekes elképzelés. Alatta az az évekkel ezelőtti hír, amikor pár fajvédő szervezet megpróbált     
+lecsukatni a véleményem miatt. De az nem cenzúra." title="Az első érdekes elképzelés. Alatta az az   
+  évekkel ezelőtti hír, amikor pár fajvédő szervezet megpróbált lecsukatni a véleményem miatt. De az 
+    nem cenzúra.">Az első érdekes elképzelés. Alatta az az évekkel ezelőtti hír, amikor pár fajvédő  
+   szervezet megpróbált lecsukatni a véleményem miatt. De az nem cenzúra.</p><br>Mint a fenti     
+hozzászólásból kiderül, libsikéimnek az fáj, hogy az utóbbi időben több pert is megnyertem,     
+sajnálatos módon pont ellenük. Hamar megegyeztek, hogy "megélhetési pereskedő" vagyok, ami sajátos   
+értelmezésük szerint azt jelenti, hogy <span style="font-style: italic;">ok nélkül</span> beperelek  
+ mindenkit, és a bíróság <span style="font-style: italic;">ok nélkül</span>   nekem ad igazat, akkor 
+  is, ha nincs igazam. Szerencsére erre is megvan a megoldás!<br><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+5.18.22+pm.jpg" class="img_center" alt="Csabai Béla 
+    professzort hallották" title="Csabai Béla professzort hallották">Csabai Béla professzort   
+hallották.   Káldi Gergő próbálta figyelmeztetni, hogy kissé sajátosan értelmezi a jogot, de Csabai  
+ professzor   okos és tapasztalt, bátor és szellemes, mint minden demokrata.<br></p><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+5.18.40+pm.jpg" class="img_center" alt="A   jogászklub újabb taggal bővült. Feltalálták az olyan bűncselekményt,   
+amit nem a Btk. rendel   büntetni, hanem egy íratlan jogelv. Visinszkij sírva tapsolna." title="A   
+jogászklub újabb taggal   bővült. Feltalálták az olyan bűncselekményt, amit nem a Btk. rendel   
+büntetni, hanem egy íratlan   jogelv. Visinszkij sírva tapsolna.">A jogászklub újabb taggal bővült.  
+ A joggal visszaélést nem   törvényhely rendeli büntetni, hanem egy elvont elv. Vagyis nem is 
+rendeli   büntetni. És nem is a Btk.   De a lényeg, hogy nem Csabai Béla a hülye, hanem aki mondja. 
+Radványi   Géza világhírűen nézhetetlen   propagandafilmjébe pedig átszöktek a Gyűrűk Ura 
+szereplői.</p><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+5.15.55+pm.jpg" class="img_center" alt="Mai   
+kérdésünk: hová lett a Bombagyár? Hát persze, eltüntettem, mert   bizonyíték volt. LOL! És hová tűnt 
+  az SZDSZ?" title="Mai kérdésünk: hová lett a Bombagyár? Hát   persze, eltüntettem, mert bizonyíték 
+  volt. LOL! És hová tűnt az SZDSZ?">Mai kérdésünk: hová lett a   Bombagyár? Hát persze, 
+eltüntettem,   mert bizonyítékok voltak benne. LOL! És hová tűnt az   SZDSZ?</p><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+11.44.08+pm.jpg" class="img_center" alt="Brainstorming" title="Brainstorming">További ötletbörze. Nice try, Ms. 
+Hajósi! Az "úszító"-ért     külön pont.<br></p><br>A jogrendszer megreformálása után a társaság már 
+hallucinálni is kezdett a     demokrácia mákonyától, és fiktív világot is teremtett magának. Ebben a 
+világban természetesen     valamennyien cáfolhatatlan bizonyítékokat őriznek legalább egy súlyos 
+bűncselekményre, amit     elkövettem. A legérdekesebb ötletekkel egy "Sanyi Baranyi" nevű cigány 
+állt elő, Ő egyébként     korábban a Rádió C munkatársa volt. Néhány éve hevesen üdvözölte, amikor 
+bűnöző fajtársai "Roma     Angyalok" néven fegyveres "rendfenntartó" csoportot alakítottak, és Ilja 
+Ehrenburgot megszégyenítő     hangnemű "költeményeket" szerkesztett közelgő forradalmukról. Majd 
+amikor a Kuruc.infó bemutatta őt,     villámgyorsan törölt mindent. Lássuk, milyen ötletei vannak a 
+jelenleg Írországban dekkoló     bűnpártolónak.<br><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+11.51.37+pm.jpg" class="img_center" alt="Nagy     
+ötlet: Utalják át másnak a pénzt! Nem baj, jól fog kinézni a jelzálog Misike lakásán." title="Nagy   
+  ötlet: Utalják át másnak a pénzt! Nem baj, jól fog kinézni a jelzálog Misike lakásán.">Az első 
+nagy     ötlet: Utalják át másnak a pénzt! Hát, Misike meg majd lakik a híd alatt, ha 
+elárvereztettem a     lakását...<br></p><p class="img_title"><img src="images/gallery/screen+shot+2012-04-26+at+11.51.46+pm.jpg" class="img_center" alt="Az itt     
+említett állítólagos beszédemről Sanyikámnak " hitelesített"="" hangfelvétele="" is="" van,="" de="" majd="" csak="" akkor="" hozza="" nyilvánosságra,="" ha="" "nem="" lesz="" annyi="" náci="" a="" bírók="" között""="" title="Az itt említett állítólagos beszédemről Sanyikámnak ">Az itt említett    
+ állítólagos beszédemről Sanyikámnak "hitelesített" hangfelvétele is van, de majd csak akkor hozza   
+  nyilvánosságra, ha "nem lesz annyi náci a bírók között"</p><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+11.52.01+pm.jpg" class="img_center" alt="A     
+következő zseniális ötlet" title="A következő zseniális ötlet">A következő zseniális ötlet</p><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+11.51.55+pm.jpg" class="img_center" alt="Most éppen a polóboltot találták meg, és az a bajuk, hogy szeretném     
+Gyurcsányt akasztófán látni. A Teréz körúti bolt tekintetében pár évvel el vannak maradva. Az     
+állítólagos egykori liberális polóimra is kíváncsi volnék." title="Most éppen a polóboltot találták  
+   meg, és az a bajuk, hogy szeretném Gyurcsányt akasztófán látni. A Teréz körúti bolt tekintetében  
+ pár   évvel el vannak maradva. Az állítólagos egykori liberális polóimra is kíváncsi volnék.">Most  
+ éppen a   polóboltot találták meg. A Teréz körúti bolt tekintetében pár évvel el vannak maradva. Az 
+    állítólagos egykori liberális polóimra is kíváncsi volnék. <br></p><br>Most pedig ismerkedjünk 
+meg     egy igazi liberális sztárral, Magyar   Fruzsinával! A vezetéknevét csak megtévesztésként 
+viselő     nőszemély nem   más, mint Magyar Bálint nővére, egyben Mécs Imre felesége, szóval kicsit  
+ sem     belterjes az egész társaság. A nemrég az Új Színház előtt sipákoló   némber nagyon 
+meglepődött, mert     szóltam neki, hogy ha tovább terjeszti a   Rózsa által írott rágalmazó 
+körlevelet, ő is számíthat     egy bírósági   idézésre. Természetesen ezt a közlést "fenyegetésként" 
+élte meg,   "megdöbbent"     valamint "felháborodott" (liberális kulcsszavak).<br><div style="text-align: center;"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+5_1.02.21+pm.jpg" class="img_center" alt="" title=""></div>  <p class="img_title">Károly, a 
+jogász hozzászólt<br></p><br>Lássuk, hogy   áll a gyűjtés. Összejön-e Misinek a 700 ezer, plusz a kamatok? És   
+mit mondanak a bőkezű   adományozók?<br><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+5.14.59+pm.jpg" class="img_center" alt="Köszönöm!" title="Köszönöm!">Köszönöm, Radnóti úr! Rózsimisinek pedig kívánjunk jobbulást a bélférgességére.    
+ Tegyük hozzá: orvosi titkokat Facebookon kifecsegni nem szép dolog.<br></p><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+5.15.23+pm.jpg" class="img_center" alt="Egy bőkezű     fajti" title="Egy bőkezű fajti">Egy bőkezű fajti</p><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+5.13.44+pm.jpg" class="img_center" alt="Egy még     bőkezűbb fajti" title="Egy még bőkezűbb fajti">Egy még bőkezűbb 
+fajti, aki szellemes beszólással is     szórakoztat<br></p><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+5.13.59+pm.jpg" class="img_center" alt="Jelentés    
+ csütörtök délután" title="Jelentés csütörtök délután">Jelentés csütörtök délután</p><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/screen+shot+2012-04-26+at+5.14.04+pm.jpg" class="img_center" alt="Sasszemű Riethmüller felfedezte, hogy a Facebook nyilvános" title="Sasszemű  
+   Riethmüller felfedezte, hogy a Facebook nyilvános">Sasszemű Riethmüller felfedezte, hogy a 
+Facebook     nyilvános</p><br>A végére hagytam Rózsimisi sajátkezű hozzászólásait. Talán ez a 
+legjobb. Több,   mint   öt év után Rózsimisi videófelvétellel tudja bizonyítani, hogy megvertem 
+Trychydts-t!   (Tudjátok, ez   volt az a gyökér, amelyik azt hazudta, hogy a lépcsőházukban 
+"verőlegények" támadtak   rá, de még azt   sem tudta eldönteni, merje-e azt állítani, hogy 
+személyesen én voltam az egyik,   aztán kicsit sok   volt a fizikai képtelenség a meséjében, és a 
+rendőrség megszüntette az   eljárást.)<br><p class="img_title"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/gallery/rozsimisi_ragalmaz.jpg" class="img_center" alt="Rózsimisi rágalmaz" title="Rózsimisi rágalmaz">Én még azt sem vettem észre,   hogy ütném   Trichinellát, nemhogy azt, 
+hogy Rózsimisi is ott áll egy kamerával. Kérdés, ha ilyen   remek   bizonyítéka van, öt év alatt 
+miért nem adta át a rendőrségnek?<br></p><br>Az itt feltett   kérdésekre   Rózsimisi és derék társai 
+június 4-én személyesen próbálhatnak meg választ adni a   Fővárosi   Törvényszék II/43. 
+tárgyalótermében.<br><br></div>    <div style="margin-top: 15px; text-align: center;"><a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/index.php?category=2&amp;startdate=2012-04-26&amp;startid=">Vissza a tartalomjegyzékhez</a></div>
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+<! ----------------------- FACEBOOK LIKE ----------------------- !>
+
+<div class="facebook-like">
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "http://connect.facebook.net/en_US/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="fb-like" data-href="http://www.droidzona.hu" data-send="true" data-width="450" data-show-faces="false" data-font="trebuchet ms"></div>
+
+</div>      
+
+<! ----------------------- FACEBOOK LIKE VEGE ----------------------- !>
+      
+<div id="banner1" class="banner">
+<a style="cursor: pointer;" onclick="clickbanner(1);"><img src="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/images/banners/banner_1.jpg" alt="Hirdetés"></a></div>
+
+<a name="comments"></a>
+<div id="comments">
+</div>
+
+<script type="text/javascript" language="JavaScript">
+  getcomments(147, 0, 1);
+</script>
+
+
+</div>
+
+
+<script type="text/javascript" language="JavaScript">
+  flipcalendar(2012, 04, 2);
+</script>
+
+<div class="footer">
+BlogGép 2.0 (C) 2011 tomcat<br >
+<a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=JOGINYIL">jogi nyilatkozat</a>
+<a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=IMPRESSZUM">impresszum</a>
+<a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/showpost.php?id=HIRDETES">hirdetési ajánlat</a>
+<a href="https://web.archive.org/web/20120430172026id_/http://www.tomcatpolo.hu:80/droidzona/messagebox.php">üzenetküldés</a>
+</div>
+
+</div><br >
+
+<! ----------------------- SZOVEG VEGE ----------------------- !>
+
+</div>
+</div>
+
+</center>
+
+<!-- Piwik -->
+<script type="text/javascript">
+var pkBaseURL = (("https:" == document.location.protocol) ? "http://piwik.sidripalliance.com/piwik/" : "http://piwik.sidripalliance.com/piwik/");
+document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
+</script><script type="text/javascript">
+try {
+var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 9);
+piwikTracker.trackPageView();
+piwikTracker.enableLinkTracking();
+} catch( err ) {}
+</script><noscript><p><img src="http://piwik.sidripalliance.com/piwik/piwik.php?idsite=9" style="border:0" alt="" /></p></noscript>
+<!-- End Piwik Tracking Code -->
+
+</body>
+</html>
